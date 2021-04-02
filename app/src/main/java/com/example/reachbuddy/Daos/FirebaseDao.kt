@@ -13,7 +13,7 @@ class FirebaseDao {
         suspend fun writeuser(users: Users)
         {
             val ref=db.collection("USER")
-            ref.document("userinfo").set(users).addOnSuccessListener {
+            ref.document(users.user_uid.toString()).set(users).addOnSuccessListener {
                 Log.e("write_log","Succesfulll")
             }
                 .addOnFailureListener {
