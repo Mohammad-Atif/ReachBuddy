@@ -57,10 +57,7 @@ class Authorisation_Control(val activity: Activity){
     }
 
 
-    /*
-    After a user successfully signs in, get an ID token from the GoogleSignInAccount object,
-    exchange it for a Firebase credential, and authenticate with Firebase using the Firebase credential
-     */
+
     fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)

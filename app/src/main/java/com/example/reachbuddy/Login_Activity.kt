@@ -54,8 +54,10 @@ class Login_Activity : AppCompatActivity() {
     }
     private fun signIn() {
         val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+        startActivityForResult(signInIntent, RC_SIGN_IN)  //this will launch google signin poppup
     }
+
+    //we get the result of signinpoppup on onAcitivityResult lifecycle
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -75,6 +77,11 @@ class Login_Activity : AppCompatActivity() {
         }
     }
 
+    /*
+   After a user successfully signs in, get an ID token from the GoogleSignInAccount object,
+   exchange it for a Firebase credential, and authenticate with Firebase using the Firebase credential
+    */
+
     fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
@@ -91,6 +98,11 @@ class Login_Activity : AppCompatActivity() {
                 }
             }
     }
+
+    /*
+    After a succesfull signIn this function takes data like username,uid etc and pass it to main
+    activity
+     */
 
     private fun get_pass_data_to_actiivty(user: FirebaseUser?)
     {
