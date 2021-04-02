@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ReachBuddy</string>
+    <string name="signinstring">SignIn</string>
 </resources>
