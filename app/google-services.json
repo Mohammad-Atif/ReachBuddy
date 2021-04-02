@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "398562023397-4b1tn5vkeefkianj65goguc6v0spvcof.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.reachbuddy",
+            "certificate_hash": "901b251d64b9ff0bec5ef66798f8e09e1c059879"
+          }
+        },
+        {
           "client_id": "398562023397-jp3k4phi09c3n20ok6o96je6clsio26o.apps.googleusercontent.com",
           "client_type": 3
         }

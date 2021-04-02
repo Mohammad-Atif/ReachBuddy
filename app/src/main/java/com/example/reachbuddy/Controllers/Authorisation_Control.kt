@@ -10,7 +10,7 @@ import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat.startActivity
 import com.example.reachbuddy.MainActivity
 import com.example.reachbuddy.R
-import com.example.reachbuddy.utils.Constants.Companion.RC_SIGN_IN
+//import com.example.reachbuddy.utils.Constants.Companion.RC_SIGN_IN
 import com.example.reachbuddy.utils.Constants.Companion.USER_IMAGE_KEY
 import com.example.reachbuddy.utils.Constants.Companion.USER_NAME_KEY
 import com.example.reachbuddy.utils.Constants.Companion.USER_UID_KEY
@@ -31,6 +31,8 @@ i.e requires activity as a paramenter
 Copyied the code from firebase authenticatin documnetation
 
  */
+
+/*
 class Authorisation_Control(val activity: Activity){
     // Configure Google Sign In
 
@@ -38,7 +40,7 @@ class Authorisation_Control(val activity: Activity){
 // ...
 // Initialize Firebase Auth
     val  auth = Firebase.auth
-    val TAG = "GoogleActivity"
+    val TAG = "GoogleActivitySuccessTag"
 
 
 
@@ -51,7 +53,7 @@ class Authorisation_Control(val activity: Activity){
 
         val googleSignInClient = GoogleSignIn.getClient(activity, gso)
         val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(activity,signInIntent, RC_SIGN_IN,null)        //this will launch google signin poppup
+        startActivityForResult(activity,signInIntent,RC_SIGN_IN,null)        //this will launch google signin poppup
     }
 
 
@@ -97,3 +99,5 @@ class Authorisation_Control(val activity: Activity){
 
 
 }
+
+ */
