@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">ReachBuddy</string>
     <string name="signinstring">SignIn</string>
+    <string name="send_str">SEND</string>
+    <string name="type_your_message">Type your message</string>
+    <string name="sender_name">sender name</string>
+    <string name="message_view">Message view</string>
+    <string name="date_sended">date sended</string>
 </resources>
