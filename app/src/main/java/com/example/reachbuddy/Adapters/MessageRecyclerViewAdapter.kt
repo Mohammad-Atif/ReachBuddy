@@ -41,5 +41,6 @@ class MessageRecyclerViewAdapter : RecyclerView.Adapter<MessageRecyclerViewAdapt
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.messageview.text=messegeslist.get(position).user_message
         holder.senderview.text=messegeslist.get(position).user.user_name
+        holder.dateSendedview.text=messegeslist.get(position).message_time
     }
 }

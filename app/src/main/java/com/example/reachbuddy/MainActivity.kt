@@ -18,6 +18,7 @@ import com.example.reachbuddy.utils.Constants.Companion.USER_IMAGE_KEY
 import com.example.reachbuddy.utils.Constants.Companion.USER_NAME_KEY
 import com.example.reachbuddy.utils.Constants.Companion.USER_UID_KEY
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +29,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val user=getuserclass()
+
+        val c = Calendar.getInstance()
+        val hour = c.get(Calendar.HOUR_OF_DAY).toString()
+        val minute = c.get(Calendar.MINUTE).toString()
+
+
 
 
            //generating the user instance from the data from login activity
@@ -40,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
 
         btn_send.setOnClickListener {
-            viewModel.writemessage(UserMessage(txt_message.text.toString(),user))
+            viewModel.writemessage(UserMessage(txt_message.text.toString(),user,"$hour:$minute"))
         }
 
         viewModel.messegelist.observe(this, Observer {
