@@ -23,9 +23,15 @@ class SocialViewModel(
         }
     }
 
+    /*
+    This function is to get the messeges in the realtime
+    this will fetch the data from the repository in the realtime
+     */
     fun getmessages(){
         viewModelScope.launch {
 
+            val l=FirebaseDao.GetInstantMsg()
+            messegelist.postValue(l)
         }
     }
     /*
@@ -34,6 +40,9 @@ class SocialViewModel(
      */
 
     fun writemessage(userMessage: UserMessage){
+
+        if(userMessage.user_message=="" || userMessage.user_message==" " || userMessage.user_message=="  ")
+            return
 
         var l: MutableList<UserMessage>?= mutableListOf()
         if(!messegelist.value.isNullOrEmpty())

@@ -66,6 +66,30 @@ class FirebaseDao {
             return messages
         }
 
+        suspend fun GetInstantMsg():MutableList<UserMessage>
+        {
+            val messages: MutableList<UserMessage> = mutableListOf()
+            val msgref=db.collection("MESSAGES")
+            msgref.addSnapshotListener{snapshot,e->
+                if (e != null) {
+                    Log.w("failed", "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+
+                if (snapshot != null) {
+                    lateinit var userMessage: UserMessage
+                    for(document in snapshot)
+                    {
+                        userMessage=document.toObject<UserMessage>()
+                        messages.add(userMessage)
+                    }
+                }
+
+                }
+            return messages
+        }
 
     }
+
+
 }

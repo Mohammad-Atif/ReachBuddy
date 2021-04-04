@@ -36,17 +36,17 @@ class MainActivity : AppCompatActivity() {
         val minute = c.get(Calendar.MINUTE).toString()
 
 
-
-
-
         val rep=repository()
         val viewmodelProvider=SocialViewModelProvider(rep)
         viewModel=ViewModelProvider(this,viewmodelProvider).get(SocialViewModel::class.java)
         viewModel.writeuserinfo(user)
+
         initrecyclerview()
 
 
-
+        viewModel.messegelist.observe(this, Observer {
+            messageadapter.updatelist(it)
+        })
 
 
         btn_send.setOnClickListener {
@@ -54,11 +54,11 @@ class MainActivity : AppCompatActivity() {
             txt_message.text.clear()
         }
 
-        viewModel.messegelist.observe(this, Observer {
-            messageadapter.updatelist(it)
-        })
+        viewModel.getmessages()
+
 
     }
+
 
 
 

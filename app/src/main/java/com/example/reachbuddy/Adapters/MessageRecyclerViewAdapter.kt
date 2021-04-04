@@ -19,7 +19,7 @@ class MessageRecyclerViewAdapter : RecyclerView.Adapter<MessageRecyclerViewAdapt
         Log.e("got called","RecyclerView Funtion")
         messegeslist=list
         notifyDataSetChanged()
-    }
+}
 
 
     class ViewHolder(view: View):RecyclerView.ViewHolder(view){
