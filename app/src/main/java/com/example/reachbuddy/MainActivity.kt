@@ -18,6 +18,7 @@ import com.example.reachbuddy.utils.Constants
 import com.example.reachbuddy.utils.Constants.Companion.USER_IMAGE_KEY
 import com.example.reachbuddy.utils.Constants.Companion.USER_NAME_KEY
 import com.example.reachbuddy.utils.Constants.Companion.USER_UID_KEY
+import com.example.reachbuddy.utils.Topspacingdecoration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -103,6 +104,8 @@ class MainActivity : AppCompatActivity() {
         msg_recyclerView.apply {
             layoutManager= LinearLayoutManager(this@MainActivity)
             messageadapter= MessageRecyclerViewAdapter()
+            val topspace= Topspacingdecoration(5)
+            addItemDecoration(topspace)
             adapter= messageadapter
         }
         messageadapter.updatelist(viewModel.initialgetmsg())

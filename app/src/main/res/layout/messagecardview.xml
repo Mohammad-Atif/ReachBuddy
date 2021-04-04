@@ -18,6 +18,8 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:id="@+id/messagetxtview"
+            android:textColor="#000000"
+            android:inputType="textMultiLine"
             android:paddingTop="10dp"
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
