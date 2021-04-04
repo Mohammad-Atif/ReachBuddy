@@ -29,7 +29,10 @@ class SocialViewModel(
     }
 
     fun writemessage(userMessage: UserMessage){
-        val l: MutableList<UserMessage>?= mutableListOf()
+
+        var l: MutableList<UserMessage>?= mutableListOf()
+        if(!messegelist.value.isNullOrEmpty())
+            l=messegelist.value
         l?.add(userMessage)
         messegelist.postValue(l)
     }
