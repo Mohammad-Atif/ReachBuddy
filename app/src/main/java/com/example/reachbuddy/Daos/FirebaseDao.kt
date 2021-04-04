@@ -29,6 +29,10 @@ class FirebaseDao {
                 }
         }
 
+        /*
+        This method is for when the user types message and press send button
+        it will add the data in  the firestore database
+         */
         suspend fun WriteMsgtoDB(userMessage: UserMessage)
         {
             val c = Calendar.getInstance()
@@ -39,10 +43,15 @@ class FirebaseDao {
 
             val hour = c.get(Calendar.HOUR_OF_DAY).toString()
             val minute = c.get(Calendar.MINUTE).toString()
+            val sec = c.get(Calendar.SECOND).toString()
             val msgref=db.collection("MESSAGES")
-            msgref.document("$month:$day:$hour:$minute").set(userMessage)
+            msgref.document("$month:$day:$hour:$minute:$sec").set(userMessage)
         }
 
+        /*
+        This function is called on the opening of app to get all the messeges from the firestore
+
+         */
         suspend fun getusersmesseges():MutableList<UserMessage>{
             val messages: MutableList<UserMessage> = mutableListOf()
             val msgref=db.collection("MESSAGES")

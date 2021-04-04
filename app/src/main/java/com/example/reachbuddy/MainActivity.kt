@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //generating the user instance from the data from login activity
         val user=getuserclass()
 
         val c = Calendar.getInstance()
@@ -37,19 +38,20 @@ class MainActivity : AppCompatActivity() {
 
 
 
-           //generating the user instance from the data from login activity
+
         val rep=repository()
         val viewmodelProvider=SocialViewModelProvider(rep)
         viewModel=ViewModelProvider(this,viewmodelProvider).get(SocialViewModel::class.java)
         viewModel.writeuserinfo(user)
         initrecyclerview()
 
-        messageadapter.updatelist(viewModel.initialgetmsg())
+
 
 
 
         btn_send.setOnClickListener {
             viewModel.writemessage(UserMessage(txt_message.text.toString(),user,"$hour:$minute"))
+            txt_message.text.clear()
         }
 
         viewModel.messegelist.observe(this, Observer {
@@ -78,5 +80,6 @@ class MainActivity : AppCompatActivity() {
             messageadapter= MessageRecyclerViewAdapter()
             adapter= messageadapter
         }
+        messageadapter.updatelist(viewModel.initialgetmsg())
     }
 }
