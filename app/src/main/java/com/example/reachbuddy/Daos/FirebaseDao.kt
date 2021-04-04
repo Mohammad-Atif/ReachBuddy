@@ -5,6 +5,7 @@ import com.example.reachbuddy.Models.UserMessage
 import com.example.reachbuddy.Models.Users
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import java.util.*
 
@@ -42,8 +43,18 @@ class FirebaseDao {
             msgref.document("$month:$day:$hour:$minute").set(userMessage)
         }
 
-        suspend fun getusersmesseges(){
-            TODO()
+        suspend fun getusersmesseges():MutableList<UserMessage>{
+            val messages: MutableList<UserMessage> = mutableListOf()
+            val msgref=db.collection("MESSAGES")
+            msgref.get().addOnSuccessListener { 
+                lateinit var userMessage: UserMessage
+                for(document in it)
+                {
+                    userMessage=document.toObject<UserMessage>()
+                    messages.add(userMessage)
+                }
+            }
+            return messages
         }
 
 

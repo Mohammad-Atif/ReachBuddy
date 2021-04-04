@@ -13,4 +13,6 @@ class repository(
 
     suspend fun writeuserdata(users: Users)=FirebaseDao.writeuser(users)
 
+    suspend fun getusermsgfirst()=FirebaseDao.getusersmesseges()
+
 }

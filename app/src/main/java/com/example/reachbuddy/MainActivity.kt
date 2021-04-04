@@ -44,6 +44,8 @@ class MainActivity : AppCompatActivity() {
         viewModel.writeuserinfo(user)
         initrecyclerview()
 
+        messageadapter.updatelist(viewModel.initialgetmsg())
+
 
 
         btn_send.setOnClickListener {

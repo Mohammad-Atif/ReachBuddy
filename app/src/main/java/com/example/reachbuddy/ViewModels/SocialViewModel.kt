@@ -28,6 +28,10 @@ class SocialViewModel(
 
         }
     }
+    /*
+    This method is get called when the users types message and press send button
+    it will update the list
+     */
 
     fun writemessage(userMessage: UserMessage){
 
@@ -40,6 +44,19 @@ class SocialViewModel(
         viewModelScope.launch {
             FirebaseDao.WriteMsgtoDB(userMessage)
         }
+    }
+
+    /*
+    This is the function to get all the messeges when the app is opened
+     */
+    fun initialgetmsg():MutableList<UserMessage>
+    {
+        var list: MutableList<UserMessage> = mutableListOf()
+        viewModelScope.launch {
+            list=repository.getusermsgfirst()
+        }
+        messegelist.postValue(list)
+        return list
     }
 
 
