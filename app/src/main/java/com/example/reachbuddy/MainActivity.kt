@@ -3,7 +3,12 @@ package com.example.reachbuddy
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.reachbuddy.Adapters.MessageRecyclerViewAdapter
+import com.example.reachbuddy.Models.UserMessage
 import com.example.reachbuddy.Models.Users
 import com.example.reachbuddy.Repository.repository
 import com.example.reachbuddy.ViewModels.SocialViewModel
@@ -12,26 +17,39 @@ import com.example.reachbuddy.utils.Constants
 import com.example.reachbuddy.utils.Constants.Companion.USER_IMAGE_KEY
 import com.example.reachbuddy.utils.Constants.Companion.USER_NAME_KEY
 import com.example.reachbuddy.utils.Constants.Companion.USER_UID_KEY
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: SocialViewModel
+    lateinit var  messageadapter:MessageRecyclerViewAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val user=getuserclass()
+
 
            //generating the user instance from the data from login activity
         val rep=repository()
         val viewmodelProvider=SocialViewModelProvider(rep)
         viewModel=ViewModelProvider(this,viewmodelProvider).get(SocialViewModel::class.java)
-
-    }
-
-    override fun onStart() {
-        super.onStart()
-        val user=getuserclass()
         viewModel.writeuserinfo(user)
+        initrecyclerview()
+
+
+
+        btn_send.setOnClickListener {
+            viewModel.writemessage(UserMessage(txt_message.text.toString(),user))
+        }
+
+        viewModel.messegelist.observe(this, Observer {
+            messageadapter.updatelist(it)
+        })
+
     }
+
+
 
     //function to get all the data from the login activity and creating and returning
     //the user instance from the data to be used in write function
@@ -42,5 +60,14 @@ class MainActivity : AppCompatActivity() {
         val user_uid=bundle?.getString(USER_UID_KEY)
         val user_image=bundle?.getString(USER_IMAGE_KEY)
         return Users(user_name,user_uid,user_image)
+    }
+
+    private fun initrecyclerview()
+    {
+        msg_recyclerView.apply {
+            layoutManager= LinearLayoutManager(this@MainActivity)
+            messageadapter= MessageRecyclerViewAdapter()
+            adapter= messageadapter
+        }
     }
 }
