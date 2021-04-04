@@ -2,6 +2,7 @@ package com.example.reachbuddy
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -17,6 +18,9 @@ import com.example.reachbuddy.utils.Constants
 import com.example.reachbuddy.utils.Constants.Companion.USER_IMAGE_KEY
 import com.example.reachbuddy.utils.Constants.Companion.USER_NAME_KEY
 import com.example.reachbuddy.utils.Constants.Companion.USER_UID_KEY
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
@@ -28,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val db= Firebase.firestore
         //generating the user instance from the data from login activity
         val user=getuserclass()
 
@@ -44,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         initrecyclerview()
 
 
+
         viewModel.messegelist.observe(this, Observer {
             messageadapter.updatelist(it)
         })
@@ -54,7 +60,26 @@ class MainActivity : AppCompatActivity() {
             txt_message.text.clear()
         }
 
-        viewModel.getmessages()
+       // viewModel.getmessages()
+
+        val msgref=db.collection("MESSAGES")
+        val messages: MutableList<UserMessage> = mutableListOf()
+        msgref.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                Log.w("failed", "Listen failed.", e)
+                return@addSnapshotListener
+            }
+
+            if (snapshot != null) {
+                lateinit var userMessage: UserMessage
+                for (document in snapshot) {
+                    userMessage = document.toObject<UserMessage>()
+                    messages.add(userMessage)
+                }
+            }
+            messageadapter.updatelist(messages)
+            msg_recyclerView.scrollToPosition(messageadapter.itemCount-1)
+        }
 
 
     }
