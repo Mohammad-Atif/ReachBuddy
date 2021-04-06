@@ -9,4 +9,9 @@
     <string name="menuimage">menuimage</string>
     <string name="public_chat">PUBLIC CHAT</string>
     <string name="private_chat">PRIVATE CHAT</string>
+    <string name="display_name_string">Display Name</string>
+    <string name="count_string">Count</string>
+    <string name="like_image_string">Like image</string>
+    <string name="profile_pic_image">Profile Pic Image</string>
+    <string name="your_bio_here_string">Your Bio Here</string>
 </resources>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.ProfileViewingActivity">
+
+    <ImageView
+        android:id="@+id/ImgProfilePic"
+        android:layout_width="155dp"
+        android:layout_height="155dp"
+        android:contentDescription="@string/profile_pic_image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.125"
+        app:srcCompat="@android:drawable/btn_star_big_off" />
+
+    <TextView
+        android:id="@+id/TxtProfileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/display_name_string"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/ImgProfilePic"
+        app:layout_constraintStart_toStartOf="@+id/ImgProfilePic"
+        app:layout_constraintTop_toBottomOf="@+id/ImgProfilePic" />
+
+    <ImageView
+        android:id="@+id/ImgLike"
+        android:layout_width="40dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/like_image_string"
+        app:layout_constraintEnd_toEndOf="@+id/TxtProfileName"
+        app:layout_constraintHorizontal_bias="0.174"
+        app:layout_constraintStart_toStartOf="@+id/TxtProfileName"
+        app:layout_constraintTop_toBottomOf="@+id/TxtProfileName"
+        app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
+
+    <TextView
+        android:id="@+id/TxtLikesCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/count_string"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ImgLike"
+        app:layout_constraintEnd_toEndOf="@+id/TxtProfileName"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toEndOf="@+id/ImgLike"
+        app:layout_constraintTop_toTopOf="@+id/ImgLike"
+        app:layout_constraintVertical_bias="0.53999996" />
+
+    <EditText
+        android:id="@+id/TxtProfileBio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:inputType="textMultiLine"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:fontFamily="@font/poppins"
+        android:enabled="false"
+        android:text="@string/your_bio_here_string"
+        android:textColor="#E3000000"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ImgLike"
+        app:layout_constraintVertical_bias="0.206"
+        android:importantForAutofill="no" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

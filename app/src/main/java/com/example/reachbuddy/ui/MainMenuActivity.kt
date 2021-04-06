@@ -32,6 +32,10 @@ class MainMenuActivity : AppCompatActivity() {
             startActivity(Intent(this,MainActivity::class.java))
         }
 
+        binding.UserProfileIcon.setOnClickListener {
+            startActivity(Intent(this,ProfileViewingActivity::class.java))
+        }
+
     }
 
 
