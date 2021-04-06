@@ -6,4 +6,7 @@
     <string name="sender_name">sender name</string>
     <string name="message_view">Message view</string>
     <string name="date_sended">date sended</string>
+    <string name="menuimage">menuimage</string>
+    <string name="public_chat">PUBLIC CHAT</string>
+    <string name="private_chat">PRIVATE CHAT</string>
 </resources>

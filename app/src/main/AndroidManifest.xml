@@ -10,15 +10,19 @@
         android:name="androidx.multidex.MultiDexApplication"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Login_Activity" >
+        <activity android:name=".ui.Login_Activity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Signup_Activity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".ui.MainMenuActivity" />
+        <activity android:name=".ui.MainActivity" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

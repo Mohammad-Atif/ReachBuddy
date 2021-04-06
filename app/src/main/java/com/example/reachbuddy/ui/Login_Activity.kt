@@ -1,10 +1,10 @@
-package com.example.reachbuddy
+package com.example.reachbuddy.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.core.content.ContextCompat
+import com.example.reachbuddy.R
 //import com.example.reachbuddy.Controllers.Authorisation_Control
 import com.example.reachbuddy.utils.Constants
 //import com.example.reachbuddy.utils.Constants.Companion.RC_SIGN_IN
@@ -54,7 +54,9 @@ class Login_Activity : AppCompatActivity() {
     }
     private fun signIn() {
         val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)  //this will launch google signin poppup
+        startActivityForResult(signInIntent,
+            RC_SIGN_IN
+        )  //this will launch google signin poppup
     }
 
     //we get the result of signinpoppup on onAcitivityResult lifecycle
@@ -108,15 +110,7 @@ class Login_Activity : AppCompatActivity() {
     {
         if(user!=null)
         {
-            val user_name=user.displayName
-            val user_image=user.photoUrl.toString()
-            val user_uid=user.uid
-            val intent=Intent(this,MainActivity::class.java)
-            val bundle=Bundle()
-            bundle.putString(Constants.USER_NAME_KEY,user_name)
-            bundle.putString(Constants.USER_IMAGE_KEY,user_image)
-            bundle.putString(Constants.USER_UID_KEY,user_uid)
-            intent.putExtras(bundle)
+            val intent=Intent(this, MainMenuActivity::class.java)
             startActivity(intent)
 
         }

@@ -7,7 +7,9 @@ import com.example.reachbuddy.Daos.FirebaseDao
 import com.example.reachbuddy.Models.UserMessage
 import com.example.reachbuddy.Models.Users
 import com.example.reachbuddy.Repository.repository
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.auth.User
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
 class SocialViewModel(
@@ -16,7 +18,8 @@ class SocialViewModel(
 
     val userlist: MutableLiveData<User> = MutableLiveData()
     val messegelist : MutableLiveData<MutableList<UserMessage>> = MutableLiveData()
-    fun writeuserinfo(users: Users){
+    fun writeuserinfo(){
+        val users=getuserclass()
 
         viewModelScope.launch {
             repository.writeuserdata(users)
@@ -67,6 +70,16 @@ class SocialViewModel(
         messegelist.postValue(list)
         return list
     }
+
+    fun getuserclass():Users
+    {
+        val user= Firebase.auth.currentUser
+        val user_name=user.displayName
+        val user_uid=user.uid
+        val user_image=user.photoUrl.toString()
+        return Users(user_name,user_uid,user_image)
+    }
+
 
 
 }
