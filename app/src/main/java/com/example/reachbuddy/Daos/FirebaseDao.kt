@@ -63,6 +63,7 @@ class FirebaseDao {
                     messages.add(userMessage)
                 }
             }
+            Log.e("size","${messages.size}")
             return messages
         }
 

@@ -63,11 +63,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
-        android:inputType="textMultiLine"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
         android:fontFamily="@font/poppins"
-        android:enabled="false"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine"
         android:text="@string/your_bio_here_string"
         android:textColor="#E3000000"
         android:textSize="20sp"
@@ -75,9 +75,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ImgLike"
-        app:layout_constraintVertical_bias="0.206"
-        android:importantForAutofill="no" />
+        app:layout_constraintVertical_bias="0.206" />
 
+    <ImageView
+        android:id="@+id/ImgEditBio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/TxtProfileBio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.22"
+        app:layout_constraintStart_toEndOf="@+id/TxtProfileBio"
+        app:layout_constraintTop_toTopOf="@+id/TxtProfileBio"
+        app:srcCompat="@drawable/ic_edit_black_24dp"
+        android:contentDescription="@string/image_to_edit_bio" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

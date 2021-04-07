@@ -7,5 +7,7 @@ class Constants {
         const val USER_NAME_KEY="USER_NAME_KEY"
         const val USER_IMAGE_KEY="USER IMAGE KEY"
         const val USER_UID_KEY="USER UID KEY"
+        const val DEFAULT_IMAGE_URL="https://res.cloudinary.com/practicaldev/image/fetch/s--BcXcD88z--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://thepracticaldev.s3.amazonaws.com/i/5sn1ah1x2i3kh1pqi1kg.jpg"
+        const val DEFAULT_BIO="Add your Bio here"
     }
 }
