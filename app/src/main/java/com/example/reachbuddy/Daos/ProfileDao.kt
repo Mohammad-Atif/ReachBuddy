@@ -6,6 +6,7 @@ import com.example.reachbuddy.Models.Users
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -64,6 +65,15 @@ class ProfileDao {
         return getting
     }
 
+    /*
+    Return uid of persons who likes the profile of current user name\
+    obviously returning task now read above comment for explanation :p
+     */
+
+    fun getLikedByUids(userName:String): Task<QuerySnapshot>
+    {
+        return userProfileref.whereEqualTo("userName",userName).get()
+    }
 
 
 

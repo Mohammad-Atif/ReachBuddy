@@ -5,21 +5,21 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.example.reachbuddy.Models.UserProfile
-import com.example.reachbuddy.ViewModels.MenuViewModel
-import com.example.reachbuddy.ViewModels.SocialViewModel
+import com.example.reachbuddy.R
+import com.example.reachbuddy.ViewModels.ProfileViewModel
 import com.example.reachbuddy.databinding.ActivityProfileViewingBinding
 
 class ProfileViewingActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityProfileViewingBinding
-    lateinit var viewModel: MenuViewModel
+    lateinit var viewModel: ProfileViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityProfileViewingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel=ViewModelProvider(this).get(MenuViewModel::class.java)
+        viewModel=ViewModelProvider(this).get(ProfileViewModel::class.java)
+        viewModel.getisliked()
 
 
         //Glide library to load image from a url into a imageView
@@ -37,6 +37,13 @@ class ProfileViewingActivity : AppCompatActivity() {
 
         })
 
+        viewModel.isLikedByYou.observe(this, Observer {
+            if(it==true)
+                binding.ImgLike.setImageResource(R.drawable.ic_favorite_black_24dp)
+            else
+                binding.ImgLike.setImageResource(R.drawable.ic_favorite_border_black_24dp)
+        })
+
 
 
         binding.ImgEditBio.setOnClickListener {
@@ -51,6 +58,11 @@ class ProfileViewingActivity : AppCompatActivity() {
                 binding.TxtProfileBio.requestFocus()
             }
         }
+
+        binding.ImgLike.setOnClickListener {
+            viewModel.managelikes()
+        }
+
 
 
     }

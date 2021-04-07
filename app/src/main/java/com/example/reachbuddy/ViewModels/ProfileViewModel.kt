@@ -1,6 +1,7 @@
 package com.example.reachbuddy.ViewModels
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,10 +27,11 @@ Android will automatically provide its own viewModelProviderFactory
 
  */
 
-class MenuViewModel : ViewModel(){
+class ProfileViewModel : ViewModel(){
 
     val imageurl=getuserclasshere().user_image_url
-
+    val LikedByUsers:MutableLiveData<MutableList<String>> = MutableLiveData()
+    val isLikedByYou:MutableLiveData<Boolean> = MutableLiveData()
     val dao=ProfileDao()
 
     val userprofile:MutableLiveData<UserProfile> = MutableLiveData()
@@ -45,18 +47,20 @@ class MenuViewModel : ViewModel(){
 
     fun getProfile()=dao.getUserProfileInstant(getuserclasshere().user_uid.toString())
 
-    fun writeuserprofile(newBio:String,likescount:String){
+    fun writeuserprofile(newBio:String,likescount:String,list: MutableList<String>? = mutableListOf()){
         val userProfile= UserProfile(
             getuserclasshere().user_name,
             getuserclasshere().user_image_url,
             likescount.toInt(),
-            newBio
+            newBio,
+            list!!
         )
 
         viewModelScope.launch {
             dao.addUserProfile(userProfile)
         }
         userprofile.postValue(userProfile)
+        LikedByUsers.postValue(userProfile.LikedBy)
     }
 
     fun getcurrentuserprofile(): UserProfile?
@@ -69,6 +73,8 @@ class MenuViewModel : ViewModel(){
             if(userProfile != null) {
                 userprofile.postValue(userProfile)
                 Log.e("ch","got executed")
+                val e= userProfile!!.LikedBy
+                LikedByUsers.postValue(e)
             }
             else
             {
@@ -79,4 +85,63 @@ class MenuViewModel : ViewModel(){
 
         return userProfile
     }
+
+    fun getisliked()
+    {
+        val task=dao.getLikedByUids(getuserclasshere().user_name.toString())
+        task.addOnSuccessListener {
+            if (it.documents.size > 0)
+            {
+                val userprof = it.documents.get(0).toObject<UserProfile>()
+                val listofLikedBy = userprof?.LikedBy
+                var flag=0
+                if (listofLikedBy != null) {
+                    for (uid in listofLikedBy) {
+                        if (uid == getuserclasshere().user_uid) {
+                            isLikedByYou.postValue(true)
+                            flag=1
+                            break
+                        }
+                    }
+                }
+                if (flag == 0)
+                    isLikedByYou.postValue(false)
+             }
+            else
+                isLikedByYou.postValue(false)
+        }
+    }
+
+    /*
+    This functon will handle to increase and decrease the likes
+     */
+
+    fun managelikes()
+    {
+        val task=dao.getLikedByUids(getuserclasshere().user_name.toString())
+        task.addOnSuccessListener {
+            val userprof=it.documents.get(0).toObject<UserProfile>()
+            val listofLikedBy=userprof?.LikedBy
+            var likesCount = userprof?.LikesCount!!.toInt()
+            if(isLikedByYou.value==true)
+            {
+                listofLikedBy?.remove(getuserclasshere().user_uid.toString())
+                likesCount = likesCount - 1
+                isLikedByYou.postValue(false)
+            }
+            else
+            {
+                listofLikedBy?.add(getuserclasshere().user_uid.toString())
+                likesCount = likesCount + 1
+                isLikedByYou.postValue(true)
+            }
+
+
+            writeuserprofile(userprof?.UserBio.toString(),likesCount.toString(),listofLikedBy)
+        }
+    }
+
+
+
+
 }

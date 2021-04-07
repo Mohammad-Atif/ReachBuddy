@@ -60,6 +60,8 @@ class SocialViewModel(
 
     /*
     This is the function to get all the messeges when the app is opened
+    update 07.04.2021
+    This will not work For explanation visit FirebaseDao.kt
      */
     fun initialgetmsg():MutableList<UserMessage>
     {

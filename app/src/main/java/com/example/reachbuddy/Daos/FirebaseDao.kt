@@ -50,6 +50,11 @@ class FirebaseDao {
 
         /*
         This function is called on the opening of app to get all the messeges from the firestore
+        update -07.04.2021
+        This function was not working because you cannot assign a value inside .addOnSu..Listnere
+        more consicecy the messege mutable list is empty when we are returning it
+        As soon as it leaves the curly braces the messege list values dissapeared and becomes what
+        is used to be here- mutablelistof()..... means empty
 
          */
         suspend fun getusersmesseges():MutableList<UserMessage>{
