@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.reachbuddy.Models.UserProfile
 import com.example.reachbuddy.R
 
-class ProfileRecyclerViewAdapter : RecyclerView.Adapter<ProfileRecyclerViewAdapter.ViewHolder>() {
+class ProfileRecyclerViewAdapter(val listener: onClicklistener): RecyclerView.Adapter<ProfileRecyclerViewAdapter.ViewHolder>() {
 
     private var listofProfiles:MutableList<UserProfile> = mutableListOf<UserProfile>()
 
@@ -20,10 +21,23 @@ class ProfileRecyclerViewAdapter : RecyclerView.Adapter<ProfileRecyclerViewAdapt
     that describes what the views looking like in the recyclerview
     It just describles all the views in the recyclerview
      */
-    inner class ViewHolder(view: View):RecyclerView.ViewHolder(view)
+    inner class ViewHolder(view: View):RecyclerView.ViewHolder(view),View.OnClickListener
     {
         val profilepic : ImageView =view.findViewById(R.id.ProfilePicImg)
         val profilename:TextView=view.findViewById(R.id.DisplayNameTxt)
+
+        init {
+            view.setOnClickListener(this)
+        }
+
+        override fun onClick(p0: View?) {
+            val p = adapterPosition
+            if (p != RecyclerView.NO_POSITION) {
+                listener.Onclick(p)
+            }
+        }
+
+
     }
 
     //this fucntion is to update the list when new pofile are added or profiles are deleted
@@ -55,6 +69,10 @@ class ProfileRecyclerViewAdapter : RecyclerView.Adapter<ProfileRecyclerViewAdapt
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.profilename.text=listofProfiles.get(position).UserName
         Glide.with(holder.itemView).load(listofProfiles.get(position).UserProfilePicLink).circleCrop().into(holder.profilepic)
+    }
+
+    interface onClicklistener{
+        fun Onclick(position: Int)
     }
 
 }

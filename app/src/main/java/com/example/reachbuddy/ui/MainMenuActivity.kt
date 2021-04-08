@@ -3,8 +3,10 @@ package com.example.reachbuddy.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.example.reachbuddy.Adapters.ProfileRecyclerViewAdapter
 import com.example.reachbuddy.ViewModels.ProfileViewModel
 import com.example.reachbuddy.databinding.ActivityMainMenuBinding
 

@@ -2,6 +2,7 @@ package com.example.reachbuddy.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.reachbuddy.Adapters.ProfileRecyclerViewAdapter
@@ -9,7 +10,7 @@ import com.example.reachbuddy.ViewModels.ProfileViewModel
 import com.example.reachbuddy.databinding.ActivityAllProfilesBinding
 import com.example.reachbuddy.utils.Topspacingdecoration
 
-class AllProfilesActivity : AppCompatActivity() {
+class AllProfilesActivity : AppCompatActivity(),ProfileRecyclerViewAdapter.onClicklistener {
     lateinit var binding: ActivityAllProfilesBinding
     lateinit var viewModel: ProfileViewModel
     lateinit var profileadapter:ProfileRecyclerViewAdapter
@@ -30,10 +31,14 @@ class AllProfilesActivity : AppCompatActivity() {
     {
         binding.profilesrecyclerview.apply {
             layoutManager= LinearLayoutManager(this@AllProfilesActivity)
-            profileadapter= ProfileRecyclerViewAdapter()
+            profileadapter= ProfileRecyclerViewAdapter(this@AllProfilesActivity)
             val topspace= Topspacingdecoration(5)
             addItemDecoration(topspace)
             adapter= profileadapter
         }
+    }
+
+    override fun Onclick(position: Int) {
+        Toast.makeText(this,"Click Working", Toast.LENGTH_SHORT).show()
     }
 }
