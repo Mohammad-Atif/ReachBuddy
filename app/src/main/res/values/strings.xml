@@ -15,4 +15,5 @@
     <string name="profile_pic_image">Profile Pic Image</string>
     <string name="your_bio_here_string">Your Bio Here</string>
     <string name="image_to_edit_bio">image to edit bio</string>
+    <string name="view_all_profiles">VIEW ALL PROFILES</string>
 </resources>

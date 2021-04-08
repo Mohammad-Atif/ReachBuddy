@@ -81,5 +81,21 @@
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
         app:layout_constraintVertical_bias="0.794" />
 
+    <Button
+        android:id="@+id/BtnViewAllProfiles"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corner"
+        android:fontFamily="@font/open_sans_bold"
+        android:text="@string/view_all_profiles"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnPublicChat"
+        app:layout_constraintEnd_toEndOf="@+id/btnChatRoom"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="@+id/btnPublicChat"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        app:layout_constraintVertical_bias="0.824" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
