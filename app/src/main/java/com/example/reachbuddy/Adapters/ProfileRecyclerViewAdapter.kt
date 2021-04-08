@@ -39,7 +39,7 @@ class ProfileRecyclerViewAdapter : RecyclerView.Adapter<ProfileRecyclerViewAdapt
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.profilename.text=listofProfiles.get(position).UserName
-        Glide.with(holder.itemView).load(listofProfiles.get(position).UserName).circleCrop().into(holder.profilepic)
+        Glide.with(holder.itemView).load(listofProfiles.get(position).UserProfilePicLink).circleCrop().into(holder.profilepic)
     }
 
 }
