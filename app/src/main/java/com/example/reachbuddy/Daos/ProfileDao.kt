@@ -75,6 +75,11 @@ class ProfileDao {
         return userProfileref.whereEqualTo("userName",userName).get()
     }
 
+    fun getAllUserProfiles(): Task<QuerySnapshot>
+    {
+        return userProfileref.get()
+    }
+
 
 
     private fun getuserclass(): Users

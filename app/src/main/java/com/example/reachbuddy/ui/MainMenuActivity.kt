@@ -29,6 +29,10 @@ class MainMenuActivity : AppCompatActivity() {
             startActivity(Intent(this,ProfileViewingActivity::class.java))
         }
 
+        binding.BtnViewAllProfiles.setOnClickListener {
+            startActivity(Intent(this,AllProfilesActivity::class.java))
+        }
+
     }
 
 

@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.reachbuddy.Adapters.ProfileRecyclerViewAdapter
 import com.example.reachbuddy.Daos.ProfileDao
 import com.example.reachbuddy.Models.UserProfile
 import com.example.reachbuddy.Models.Users
@@ -138,6 +139,20 @@ class ProfileViewModel : ViewModel(){
 
 
             writeuserprofile(userprof?.UserBio.toString(),likesCount.toString(),listofLikedBy)
+        }
+    }
+
+    fun updaterecyclerviewlist( profileadapter: ProfileRecyclerViewAdapter)
+    {
+        val task=dao.getAllUserProfiles()
+        task.addOnSuccessListener {
+            val list: MutableList<UserProfile> = mutableListOf()
+            for(document in it)
+            {
+                val userProfile=document.toObject<UserProfile>()
+                list.add(userProfile)
+            }
+            profileadapter.updatelist(list)
         }
     }
 
