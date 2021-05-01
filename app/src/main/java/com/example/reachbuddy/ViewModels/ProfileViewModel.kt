@@ -1,7 +1,6 @@
 package com.example.reachbuddy.ViewModels
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,7 +10,6 @@ import com.example.reachbuddy.Models.UserProfile
 import com.example.reachbuddy.Models.Users
 import com.example.reachbuddy.utils.Constants.Companion.DEFAULT_BIO
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
@@ -89,7 +87,7 @@ class ProfileViewModel : ViewModel(){
 
     fun getisliked()
     {
-        val task=dao.getLikedByUids(getuserclasshere().user_name.toString())
+        val task=dao.getProfileByName(getuserclasshere().user_name.toString())
         task.addOnSuccessListener {
             if (it.documents.size > 0)
             {
@@ -119,7 +117,7 @@ class ProfileViewModel : ViewModel(){
 
     fun managelikes()
     {
-        val task=dao.getLikedByUids(getuserclasshere().user_name.toString())
+        val task=dao.getProfileByName(getuserclasshere().user_name.toString())
         task.addOnSuccessListener {
             val userprof=it.documents.get(0).toObject<UserProfile>()
             val listofLikedBy=userprof?.LikedBy
@@ -139,6 +137,19 @@ class ProfileViewModel : ViewModel(){
 
 
             writeuserprofile(userprof?.UserBio.toString(),likesCount.toString(),listofLikedBy)
+        }
+    }
+
+    fun updateBio(userBio:String)
+    {
+        val task=dao.getProfileByName(getuserclasshere().user_name.toString())
+        task.addOnSuccessListener {
+            val userprof=it.documents.get(0).toObject<UserProfile>()
+            val listofLikedBy=userprof?.LikedBy
+            val likesCount = userprof?.LikesCount!!.toInt()
+
+
+            writeuserprofile(userBio,likesCount.toString(),listofLikedBy)
         }
     }
 

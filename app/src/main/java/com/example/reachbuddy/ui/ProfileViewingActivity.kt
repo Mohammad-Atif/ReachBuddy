@@ -49,7 +49,7 @@ class ProfileViewingActivity : AppCompatActivity() {
         binding.ImgEditBio.setOnClickListener {
             if(binding.TxtProfileBio.isEnabled==true)
             {
-                viewModel.writeuserprofile(binding.TxtProfileBio.text.toString(),binding.TxtLikesCount.text.toString())
+                viewModel.updateBio(binding.TxtProfileBio.text.toString())
                 binding.TxtProfileBio.isEnabled=false
             }
             else

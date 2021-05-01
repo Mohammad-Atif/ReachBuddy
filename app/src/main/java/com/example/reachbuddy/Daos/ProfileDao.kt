@@ -70,7 +70,7 @@ class ProfileDao {
     obviously returning task now read above comment for explanation :p
      */
 
-    fun getLikedByUids(userName:String): Task<QuerySnapshot>
+    fun getProfileByName(userName:String): Task<QuerySnapshot>
     {
         return userProfileref.whereEqualTo("userName",userName).get()
     }
