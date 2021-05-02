@@ -1,5 +1,6 @@
 package com.example.reachbuddy.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.reachbuddy.Adapters.ProfileRecyclerViewAdapter
 import com.example.reachbuddy.ViewModels.ProfileViewModel
 import com.example.reachbuddy.databinding.ActivityAllProfilesBinding
+import com.example.reachbuddy.utils.Constants.Companion.EXTRA_NAME
 import com.example.reachbuddy.utils.Topspacingdecoration
 
 class AllProfilesActivity : AppCompatActivity(),ProfileRecyclerViewAdapter.onClicklistener {
@@ -39,6 +41,10 @@ class AllProfilesActivity : AppCompatActivity(),ProfileRecyclerViewAdapter.onCli
     }
 
     override fun Onclick(position: Int) {
-        Toast.makeText(this,"Click Working", Toast.LENGTH_SHORT).show()
+       // Toast.makeText(this,"Click Working", Toast.LENGTH_SHORT).show()
+        val intent=Intent(this,ProfileViewingActivity::class.java)
+        intent.putExtra(EXTRA_NAME,profileadapter.getprofileatpostion(position).UserName.toString())
+        startActivity(intent)
+
     }
 }

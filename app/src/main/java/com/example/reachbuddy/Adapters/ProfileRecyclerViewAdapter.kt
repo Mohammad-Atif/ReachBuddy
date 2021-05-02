@@ -49,6 +49,15 @@ class ProfileRecyclerViewAdapter(val listener: onClicklistener): RecyclerView.Ad
     }
 
     /*
+    This funtion will return the profile at given postion from listofprofile which is then used in all profiles activity
+    Since we cant make listofprofile public it is not a good practice
+     */
+
+    fun getprofileatpostion(position: Int): UserProfile {
+        return listofProfiles[position]
+    }
+
+    /*
     This method is responsible for creating each on of viewholders which are displayed inside the recyclerview to user
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

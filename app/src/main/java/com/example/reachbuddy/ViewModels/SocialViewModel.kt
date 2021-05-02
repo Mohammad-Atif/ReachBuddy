@@ -18,13 +18,7 @@ class SocialViewModel(
 
     val userlist: MutableLiveData<User> = MutableLiveData()
     val messegelist : MutableLiveData<MutableList<UserMessage>> = MutableLiveData()
-    fun writeuserinfo(){
-        val users=getuserclass()
 
-        viewModelScope.launch {
-            repository.writeuserdata(users)
-        }
-    }
 
     /*
     This function is to get the messeges in the realtime

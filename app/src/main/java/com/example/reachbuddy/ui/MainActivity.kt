@@ -48,7 +48,6 @@ class MainActivity : AppCompatActivity() {
         val rep=repository()
         val viewmodelProvider=SocialViewModelProvider(rep)
         viewModel=ViewModelProvider(this,viewmodelProvider).get(SocialViewModel::class.java)
-        viewModel.writeuserinfo()
 
         initrecyclerview()
 

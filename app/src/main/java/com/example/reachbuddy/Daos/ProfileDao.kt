@@ -25,9 +25,9 @@ class ProfileDao {
     val userProfileref=db.collection("PROFILES")
 
 
-    suspend fun addUserProfile(userProfile: UserProfile){
-        val User_uid=getuserclass().user_uid
-        userProfileref.document(User_uid.toString()).set(userProfile).addOnFailureListener {
+    suspend fun addUserProfile(userProfile: UserProfile, User_uid:String=getuserclass().user_uid.toString()){
+
+        userProfileref.document(User_uid).set(userProfile).addOnFailureListener {
             Log.e("writing failed", it.toString())
         }
     }
@@ -78,6 +78,10 @@ class ProfileDao {
     fun getAllUserProfiles(): Task<QuerySnapshot>
     {
         return userProfileref.get()
+    }
+
+    fun getuid(piclink: String): Task<QuerySnapshot> {
+        return Usersref.whereEqualTo("user_image_url",piclink).get()
     }
 
 

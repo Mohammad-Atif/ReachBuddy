@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.reachbuddy.Adapters.ProfileRecyclerViewAdapter
+import com.example.reachbuddy.Daos.FirebaseDao
 import com.example.reachbuddy.Daos.ProfileDao
 import com.example.reachbuddy.Models.UserProfile
 import com.example.reachbuddy.Models.Users
@@ -28,7 +29,8 @@ Android will automatically provide its own viewModelProviderFactory
 
 class ProfileViewModel : ViewModel(){
 
-    val imageurl=getuserclasshere().user_image_url
+    var imageurl=getuserclasshere().user_image_url
+    val imagelink: MutableLiveData<String> = MutableLiveData()
     val LikedByUsers:MutableLiveData<MutableList<String>> = MutableLiveData()
     val isLikedByYou:MutableLiveData<Boolean> = MutableLiveData()
     val dao=ProfileDao()
@@ -46,38 +48,68 @@ class ProfileViewModel : ViewModel(){
 
     fun getProfile()=dao.getUserProfileInstant(getuserclasshere().user_uid.toString())
 
-    fun writeuserprofile(newBio:String,likescount:String,list: MutableList<String>? = mutableListOf()){
+    fun writeuserprofile(username: String,piclink:String,newBio:String,likescount:String,list: MutableList<String>? = mutableListOf()){
         val userProfile= UserProfile(
-            getuserclasshere().user_name,
-            getuserclasshere().user_image_url,
+            username,
+            piclink,
             likescount.toInt(),
             newBio,
             list!!
         )
 
-        viewModelScope.launch {
-            dao.addUserProfile(userProfile)
+        var user: Users?= null
+
+        /*
+        This is to add to the specific user uid by getting the uid from getuid
+         */
+        val task = dao.getuid(piclink)
+        task.addOnSuccessListener {
+            if(it.documents.size > 0)
+            {
+                user=it.documents.get(0).toObject<Users>()
+                viewModelScope.launch {
+                    dao.addUserProfile(userProfile,user?.user_uid.toString())
+                }
+
+            }
+            else
+            {
+                viewModelScope.launch {
+                    dao.addUserProfile(userProfile)
+                }
+            }
         }
+
+
         userprofile.postValue(userProfile)
         LikedByUsers.postValue(userProfile.LikedBy)
     }
 
-    fun getcurrentuserprofile(): UserProfile?
+    /*
+    creating tempoarary funtion to handl userprofilepic link becuase by defaul thte pic link is by
+    fetuserclasshere() so for any other user the pic will be of current user
+    So this  fuction will take username as parameter and sets the piclink of that user in imageurl
+     */
+
+
+
+    fun getcurrentuserprofile(username: String): UserProfile?
     {
         var userProfile:UserProfile? = null
 
-        val task=dao.getUserProfile(getuserclasshere().user_uid.toString())
+        val task=dao.getProfileByName(username)
         task.addOnSuccessListener {
-            userProfile=it.toObject<UserProfile>()
-            if(userProfile != null) {
+            if(it.documents.size > 0) {
+                userProfile=it.documents.get(0).toObject<UserProfile>()
                 userprofile.postValue(userProfile)
                 Log.e("ch","got executed")
                 val e= userProfile!!.LikedBy
                 LikedByUsers.postValue(e)
+                imagelink.postValue(userProfile!!.UserProfilePicLink.toString())
             }
             else
             {
-                writeuserprofile(DEFAULT_BIO,"0")
+                writeuserprofile(getuserclasshere().user_name.toString(),getuserclasshere().user_image_url.toString(),DEFAULT_BIO,"0")
             }
         }
 
@@ -85,9 +117,9 @@ class ProfileViewModel : ViewModel(){
         return userProfile
     }
 
-    fun getisliked()
+    fun getisliked(username:String)
     {
-        val task=dao.getProfileByName(getuserclasshere().user_name.toString())
+        val task=dao.getProfileByName(username)
         task.addOnSuccessListener {
             if (it.documents.size > 0)
             {
@@ -115,9 +147,9 @@ class ProfileViewModel : ViewModel(){
     This functon will handle to increase and decrease the likes
      */
 
-    fun managelikes()
+    fun managelikes(username: String)
     {
-        val task=dao.getProfileByName(getuserclasshere().user_name.toString())
+        val task=dao.getProfileByName(username)
         task.addOnSuccessListener {
             val userprof=it.documents.get(0).toObject<UserProfile>()
             val listofLikedBy=userprof?.LikedBy
@@ -136,9 +168,15 @@ class ProfileViewModel : ViewModel(){
             }
 
 
-            writeuserprofile(userprof?.UserBio.toString(),likesCount.toString(),listofLikedBy)
+            writeuserprofile(userprof.UserName.toString(),
+                userprof.UserProfilePicLink.toString(),
+                userprof.UserBio.toString(),likesCount.toString(),listofLikedBy)
         }
     }
+
+    /*
+    This function is to update the bio of the user
+     */
 
     fun updateBio(userBio:String)
     {
@@ -149,7 +187,7 @@ class ProfileViewModel : ViewModel(){
             val likesCount = userprof?.LikesCount!!.toInt()
 
 
-            writeuserprofile(userBio,likesCount.toString(),listofLikedBy)
+            writeuserprofile(userprof.UserName.toString(),userprof.UserProfilePicLink.toString(),userBio,likesCount.toString(),listofLikedBy)
         }
     }
 
@@ -164,6 +202,14 @@ class ProfileViewModel : ViewModel(){
                 list.add(userProfile)
             }
             profileadapter.updatelist(list)
+        }
+    }
+
+    fun writeuserinfo(){
+        val users=getuserclasshere()
+
+        viewModelScope.launch {
+            FirebaseDao.writeuser(users)
         }
     }
 

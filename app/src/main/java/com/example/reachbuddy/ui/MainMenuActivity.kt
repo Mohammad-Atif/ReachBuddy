@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.reachbuddy.Adapters.ProfileRecyclerViewAdapter
 import com.example.reachbuddy.ViewModels.ProfileViewModel
 import com.example.reachbuddy.databinding.ActivityMainMenuBinding
+import com.example.reachbuddy.utils.Constants.Companion.EXTRA_NAME
 
 class MainMenuActivity : AppCompatActivity() {
 
@@ -20,6 +21,7 @@ class MainMenuActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         viewModel=ViewModelProvider(this).get(ProfileViewModel::class.java)
+        viewModel.writeuserinfo()
 
         Glide.with(this).load(viewModel.imageurl).circleCrop().into(binding.UserProfileIcon)
 
@@ -28,7 +30,9 @@ class MainMenuActivity : AppCompatActivity() {
         }
 
         binding.UserProfileIcon.setOnClickListener {
-            startActivity(Intent(this,ProfileViewingActivity::class.java))
+            val intent=Intent(this,ProfileViewingActivity::class.java)
+            intent.putExtra(EXTRA_NAME,viewModel.getuserclasshere().user_name.toString())
+            startActivity(intent)
         }
 
         binding.BtnViewAllProfiles.setOnClickListener {

@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.example.reachbuddy.R
 import com.example.reachbuddy.ViewModels.ProfileViewModel
 import com.example.reachbuddy.databinding.ActivityProfileViewingBinding
+import com.example.reachbuddy.utils.Constants.Companion.EXTRA_NAME
 
 class ProfileViewingActivity : AppCompatActivity() {
 
@@ -18,13 +19,19 @@ class ProfileViewingActivity : AppCompatActivity() {
         binding= ActivityProfileViewingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val username=intent.getStringExtra(EXTRA_NAME).toString()
+
         viewModel=ViewModelProvider(this).get(ProfileViewModel::class.java)
-        viewModel.getisliked()
+        viewModel.getisliked(username)
+
+        viewModel.getcurrentuserprofile(username)
+
+        viewModel.imagelink.observe(this, Observer {link->
+            //Glide library to load image from a url into a imageView
+            Glide.with(this).load(link).circleCrop().into(binding.ImgProfilePic)
+        })
 
 
-        //Glide library to load image from a url into a imageView
-        Glide.with(this).load(viewModel.imageurl).circleCrop().into(binding.ImgProfilePic)
-        viewModel.getcurrentuserprofile()
         binding.TxtProfileBio.isEnabled=false
 
         viewModel.userprofile.observe(this, Observer {userprofile->
@@ -47,20 +54,24 @@ class ProfileViewingActivity : AppCompatActivity() {
 
 
         binding.ImgEditBio.setOnClickListener {
-            if(binding.TxtProfileBio.isEnabled==true)
+            if(username==viewModel.getuserclasshere().user_name.toString())
             {
-                viewModel.updateBio(binding.TxtProfileBio.text.toString())
-                binding.TxtProfileBio.isEnabled=false
+                if(binding.TxtProfileBio.isEnabled==true)
+                {
+                    viewModel.updateBio(binding.TxtProfileBio.text.toString())
+                    binding.TxtProfileBio.isEnabled=false
+                }
+                else
+                {
+                    binding.TxtProfileBio.isEnabled=true
+                    binding.TxtProfileBio.requestFocus()
+                }
             }
-            else
-            {
-                binding.TxtProfileBio.isEnabled=true
-                binding.TxtProfileBio.requestFocus()
-            }
+
         }
 
         binding.ImgLike.setOnClickListener {
-            viewModel.managelikes()
+            viewModel.managelikes(username)
         }
 
 
