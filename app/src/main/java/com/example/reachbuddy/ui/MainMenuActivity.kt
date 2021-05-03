@@ -22,6 +22,7 @@ class MainMenuActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         viewModel=ViewModelProvider(this).get(ProfileViewModel::class.java)
         viewModel.writeuserinfo()
+        viewModel.getcurrentuserprofile(viewModel.getuserclasshere().user_name.toString())
 
         Glide.with(this).load(viewModel.imageurl).circleCrop().into(binding.UserProfileIcon)
 
