@@ -10,6 +10,8 @@ import com.example.reachbuddy.Daos.ProfileDao
 import com.example.reachbuddy.Models.UserProfile
 import com.example.reachbuddy.Models.Users
 import com.example.reachbuddy.utils.Constants.Companion.DEFAULT_BIO
+import com.example.reachbuddy.utils.Constants.Companion.IS_FREIND_REQ_SENT
+import com.example.reachbuddy.utils.Constants.Companion.IS_FRIEND
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -33,6 +35,7 @@ class ProfileViewModel : ViewModel(){
     val imagelink: MutableLiveData<String> = MutableLiveData()
     val LikedByUsers:MutableLiveData<MutableList<String>> = MutableLiveData()
     val isLikedByYou:MutableLiveData<Boolean> = MutableLiveData()
+    val friendship: MutableLiveData<MutableMap<String,Boolean>> = MutableLiveData()      //this will contain two key isFriend and isFriendReuest Sent
     val dao=ProfileDao()
 
     val userprofile:MutableLiveData<UserProfile> = MutableLiveData()
@@ -48,13 +51,15 @@ class ProfileViewModel : ViewModel(){
 
     fun getProfile()=dao.getUserProfileInstant(getuserclasshere().user_uid.toString())
 
-    fun writeuserprofile(username: String,piclink:String,newBio:String,likescount:String,list: MutableList<String>? = mutableListOf()){
+    fun writeuserprofile(username: String,piclink:String,newBio:String,likescount:String,list: MutableList<String>? = mutableListOf(), FriendsList: MutableList<String> = mutableListOf(),FriendRequestList: MutableList<String> = mutableListOf()){
         val userProfile= UserProfile(
             username,
             piclink,
             likescount.toInt(),
             newBio,
-            list!!
+            list!!,
+            FriendsList,
+            FriendRequestList
         )
 
         var user: Users?= null
@@ -106,6 +111,8 @@ class ProfileViewModel : ViewModel(){
                 val e= userProfile!!.LikedBy
                 LikedByUsers.postValue(e)
                 imagelink.postValue(userProfile!!.UserProfilePicLink.toString())
+                checkfriendship(userProfile!!.FriendRequestList,userProfile!!.FriendsList)
+
             }
             else
             {
@@ -170,7 +177,7 @@ class ProfileViewModel : ViewModel(){
 
             writeuserprofile(userprof.UserName.toString(),
                 userprof.UserProfilePicLink.toString(),
-                userprof.UserBio.toString(),likesCount.toString(),listofLikedBy)
+                userprof.UserBio.toString(),likesCount.toString(),listofLikedBy,userprof.FriendsList,userprof.FriendRequestList)
         }
     }
 
@@ -187,7 +194,7 @@ class ProfileViewModel : ViewModel(){
             val likesCount = userprof?.LikesCount!!.toInt()
 
 
-            writeuserprofile(userprof.UserName.toString(),userprof.UserProfilePicLink.toString(),userBio,likesCount.toString(),listofLikedBy)
+            writeuserprofile(userprof.UserName.toString(),userprof.UserProfilePicLink.toString(),userBio,likesCount.toString(),listofLikedBy,userprof.FriendsList,userprof.FriendRequestList)
         }
     }
 
@@ -212,6 +219,76 @@ class ProfileViewModel : ViewModel(){
             FirebaseDao.writeuser(users)
         }
     }
+
+    /*
+    This function is to check wheather the user is friend or has sent/not sent friend request to the
+    user of which he is viewing profile.
+    It will update friendship Livedata .
+    We call this function is getcurrentuserprofile thats why we made is private because we are not calling
+    it from outsde the class
+     */
+    private fun checkfriendship(requestlist:MutableList<String>,friendlist:MutableList<String>)
+    {
+        val map = mutableMapOf<String,Boolean>()
+        if(requestlist.find { it==getuserclasshere().user_uid.toString() }!=null)
+        {
+            map.put(IS_FREIND_REQ_SENT,true)
+            map.put(IS_FRIEND,false)
+        }
+        else if(friendlist.find { it==getuserclasshere().user_uid.toString() }!=null)
+        {
+            map.put(IS_FREIND_REQ_SENT,false)
+            map.put(IS_FRIEND,true)
+        }
+        else
+        {
+            map.put(IS_FREIND_REQ_SENT,false)
+            map.put(IS_FRIEND,false)
+        }
+        friendship.postValue(map)
+
+    }
+
+     fun managefriendship(username: String)
+     {
+         val task=dao.getProfileByName(username)
+         task.addOnSuccessListener {
+             val userprof=it.documents.get(0).toObject<UserProfile>()
+             val friendrequeslist=userprof?.FriendRequestList
+             val currentfriends=userprof?.FriendsList
+             val f= mutableMapOf<String,Boolean>()
+             if(friendship.value?.get(IS_FRIEND)!!)
+             {
+                 currentfriends?.remove(getuserclasshere().user_uid.toString())
+
+                 f[IS_FRIEND] = false
+                 f[IS_FREIND_REQ_SENT] = false
+
+             }
+             else if(!friendship.value?.get(IS_FRIEND)!! && friendship.value?.get(IS_FREIND_REQ_SENT)!!)
+             {
+                 friendrequeslist?.remove(getuserclasshere().user_uid.toString())
+                 f[IS_FRIEND] = false
+                 f[IS_FREIND_REQ_SENT] = false
+             }
+             else if(!friendship.value?.get(IS_FRIEND)!! && !friendship.value?.get(IS_FREIND_REQ_SENT)!!)
+             {
+                 friendrequeslist?.add(getuserclasshere().user_uid.toString())
+                 Log.e("checking bug","add executed")
+                 f[IS_FRIEND] = false
+                 f[IS_FREIND_REQ_SENT] = false
+             }
+             checkfriendship(friendrequeslist!!, currentfriends!!)
+             writeuserprofile(
+                 userprof.UserName.toString(),
+                 userprof.UserProfilePicLink.toString(), userprof.UserBio.toString(),
+                 userprof.LikesCount.toString(),
+                 userprof.LikedBy, userprof.FriendsList, userprof.FriendRequestList
+             )
+         }
+     }
+
+
 
 
 

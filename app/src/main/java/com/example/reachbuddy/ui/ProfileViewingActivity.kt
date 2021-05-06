@@ -2,6 +2,7 @@ package com.example.reachbuddy.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -9,6 +10,8 @@ import com.example.reachbuddy.R
 import com.example.reachbuddy.ViewModels.ProfileViewModel
 import com.example.reachbuddy.databinding.ActivityProfileViewingBinding
 import com.example.reachbuddy.utils.Constants.Companion.EXTRA_NAME
+import com.example.reachbuddy.utils.Constants.Companion.IS_FREIND_REQ_SENT
+import com.example.reachbuddy.utils.Constants.Companion.IS_FRIEND
 
 class ProfileViewingActivity : AppCompatActivity() {
 
@@ -74,7 +77,28 @@ class ProfileViewingActivity : AppCompatActivity() {
             viewModel.managelikes(username)
         }
 
+        if(username==viewModel.getuserclasshere().user_name.toString())
+            binding.btnMakeBuddy.visibility = View.INVISIBLE
 
+
+        viewModel.friendship.observe(this, Observer {
+            if(it[IS_FRIEND]!!)
+            {
+                binding.btnMakeBuddy.text="UNFRIEND"
+            }
+            else if(it[IS_FREIND_REQ_SENT]!!)
+            {
+                binding.btnMakeBuddy.text="UNSEND REQUEST"
+            }
+            else if(!it[IS_FREIND_REQ_SENT]!!)
+            {
+                binding.btnMakeBuddy.text="MAKE BUDDY"
+            }
+        })
+
+        binding.btnMakeBuddy.setOnClickListener {
+            viewModel.managefriendship(username)
+        }
 
     }
 }

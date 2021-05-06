@@ -10,5 +10,7 @@ class Constants {
         const val DEFAULT_IMAGE_URL="https://res.cloudinary.com/practicaldev/image/fetch/s--BcXcD88z--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://thepracticaldev.s3.amazonaws.com/i/5sn1ah1x2i3kh1pqi1kg.jpg"
         const val DEFAULT_BIO="Add your Bio here"
         const val EXTRA_NAME="Extra Name"
+        const val IS_FREIND_REQ_SENT="is req sent"
+        const val IS_FRIEND="is friend"
     }
 }

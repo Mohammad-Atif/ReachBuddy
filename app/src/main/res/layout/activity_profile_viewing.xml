@@ -81,13 +81,27 @@
         android:id="@+id/ImgEditBio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/image_to_edit_bio"
         app:layout_constraintBottom_toBottomOf="@+id/TxtProfileBio"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.22"
         app:layout_constraintStart_toEndOf="@+id/TxtProfileBio"
         app:layout_constraintTop_toTopOf="@+id/TxtProfileBio"
-        app:srcCompat="@drawable/ic_edit_black_24dp"
-        android:contentDescription="@string/image_to_edit_bio" />
+        app:srcCompat="@drawable/ic_edit_black_24dp" />
+
+    <Button
+        android:id="@+id/btnMakeBuddy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corner"
+        android:padding="5dp"
+        android:text="@string/make_buddy_string"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TxtProfileBio" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
