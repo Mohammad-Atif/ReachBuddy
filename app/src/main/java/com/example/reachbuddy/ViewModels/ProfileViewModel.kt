@@ -36,6 +36,7 @@ class ProfileViewModel : ViewModel(){
     val LikedByUsers:MutableLiveData<MutableList<String>> = MutableLiveData()
     val isLikedByYou:MutableLiveData<Boolean> = MutableLiveData()
     val friendship: MutableLiveData<MutableMap<String,Boolean>> = MutableLiveData()      //this will contain two key isFriend and isFriendReuest Sent
+    val RequestsCount: MutableLiveData<Int> = MutableLiveData()
     val dao=ProfileDao()
 
     val userprofile:MutableLiveData<UserProfile> = MutableLiveData()
@@ -287,6 +288,22 @@ class ProfileViewModel : ViewModel(){
              )
          }
      }
+
+
+    /*
+    This function is to check whether the current user got any friend request or not
+    And if got then how many by changing the RequestCount Livedata
+     */
+
+    fun getRequestsCount()
+    {
+        val task=dao.getProfileByName(getuserclasshere().user_name.toString())
+        task.addOnSuccessListener {
+            val userprof=it.documents.get(0).toObject<UserProfile>()
+            val requestslist= userprof?.FriendRequestList
+            RequestsCount.postValue(requestslist?.size)
+        }
+    }
 
 
 

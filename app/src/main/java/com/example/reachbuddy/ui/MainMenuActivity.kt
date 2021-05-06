@@ -3,7 +3,9 @@ package com.example.reachbuddy.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.reachbuddy.Adapters.ProfileRecyclerViewAdapter
@@ -23,6 +25,9 @@ class MainMenuActivity : AppCompatActivity() {
         viewModel=ViewModelProvider(this).get(ProfileViewModel::class.java)
         viewModel.writeuserinfo()
         viewModel.getcurrentuserprofile(viewModel.getuserclasshere().user_name.toString())
+        binding.imgrequests.visibility=View.INVISIBLE
+        binding.requestcount.visibility=View.INVISIBLE
+        viewModel.getRequestsCount()
 
         Glide.with(this).load(viewModel.imageurl).circleCrop().into(binding.UserProfileIcon)
 
@@ -39,6 +44,23 @@ class MainMenuActivity : AppCompatActivity() {
         binding.BtnViewAllProfiles.setOnClickListener {
             startActivity(Intent(this,AllProfilesActivity::class.java))
         }
+
+        viewModel.RequestsCount.observe(this, Observer { count->
+            if(count>0)
+            {
+                binding.imgrequests.visibility=View.VISIBLE
+                binding.requestcount.visibility=View.VISIBLE
+                binding.requestcount.setText(count.toString())
+            }
+            else
+            {
+                binding.imgrequests.visibility=View.INVISIBLE
+                binding.requestcount.visibility=View.INVISIBLE
+            }
+        })
+
+
+
 
     }
 
