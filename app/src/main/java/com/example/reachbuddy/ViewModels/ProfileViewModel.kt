@@ -284,7 +284,7 @@ class ProfileViewModel : ViewModel(){
                  userprof.UserName.toString(),
                  userprof.UserProfilePicLink.toString(), userprof.UserBio.toString(),
                  userprof.LikesCount.toString(),
-                 userprof.LikedBy, userprof.FriendsList, userprof.FriendRequestList
+                 userprof.LikedBy, currentfriends, friendrequeslist                //changing it from userprof.friendist to currentfriends
              )
          }
      }
