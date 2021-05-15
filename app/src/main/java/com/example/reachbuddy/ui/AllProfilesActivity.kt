@@ -10,6 +10,7 @@ import com.example.reachbuddy.Adapters.ProfileRecyclerViewAdapter
 import com.example.reachbuddy.ViewModels.ProfileViewModel
 import com.example.reachbuddy.databinding.ActivityAllProfilesBinding
 import com.example.reachbuddy.utils.Constants.Companion.EXTRA_NAME
+import com.example.reachbuddy.utils.Constants.Companion.FOR_PROFILE_VIEWING
 import com.example.reachbuddy.utils.Topspacingdecoration
 
 class AllProfilesActivity : AppCompatActivity(),ProfileRecyclerViewAdapter.onClicklistener {
@@ -33,7 +34,7 @@ class AllProfilesActivity : AppCompatActivity(),ProfileRecyclerViewAdapter.onCli
     {
         binding.profilesrecyclerview.apply {
             layoutManager= LinearLayoutManager(this@AllProfilesActivity)
-            profileadapter= ProfileRecyclerViewAdapter(this@AllProfilesActivity)
+            profileadapter= ProfileRecyclerViewAdapter(this@AllProfilesActivity, FOR_PROFILE_VIEWING)
             val topspace= Topspacingdecoration(5)
             addItemDecoration(topspace)
             adapter= profileadapter

@@ -18,4 +18,6 @@
     <string name="view_all_profiles">VIEW ALL PROFILES</string>
     <string name="imageviewerforprof">imageviewerforprof</string>
     <string name="make_buddy_string">MAKE BUDDY</string>
+    <string name="for_canceling_request">For Canceling Request</string>
+    <string name="for_accept_ing_request">For Accept ing Request</string>
 </resources>

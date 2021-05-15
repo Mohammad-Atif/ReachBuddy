@@ -12,5 +12,7 @@ class Constants {
         const val EXTRA_NAME="Extra Name"
         const val IS_FREIND_REQ_SENT="is req sent"
         const val IS_FRIEND="is friend"
+        const val FOR_PROFILE_VIEWING=1
+        const val FOR_REQUESTS_VIEWING=2
     }
 }
