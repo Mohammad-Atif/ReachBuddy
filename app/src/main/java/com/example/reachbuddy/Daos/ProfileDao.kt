@@ -57,7 +57,7 @@ class ProfileDao {
     Now in viewmodel we use .onSuccesslistener and inside it we update the viewModel.
      */
 
-    fun getUserProfile(User_uid:String): Task<DocumentSnapshot>
+    fun getUserbyUid(User_uid:String): Task<DocumentSnapshot>
     {
 
         val getting: Task<DocumentSnapshot> = userProfileref.document(User_uid).get()

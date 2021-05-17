@@ -61,6 +61,11 @@ class ProfileRecyclerViewAdapter(val listener: onClicklistener,val forwhich: Int
         val userprofilename:TextView=view.findViewById(R.id.UserDisplayNameTxt)
         val userAcceptRequestImg : ImageView = view.findViewById(R.id.CheckImg)
         val userCancelRequestImg : ImageView = view.findViewById(R.id.CancelImg)
+
+        init {
+            view.setOnClickListener(this)
+        }
+
         override fun onClick(p0: View?) {
             val p = adapterPosition
             if (p != RecyclerView.NO_POSITION) {
@@ -74,6 +79,16 @@ class ProfileRecyclerViewAdapter(val listener: onClicklistener,val forwhich: Int
     {
         Log.e("got called","RecyclerView Profile Funtion")
         listofProfiles=list
+        notifyDataSetChanged()
+    }
+
+    //this funtion will not update the entire list but just add the new element to the existing list
+    //to be used for friendrequest
+    fun addtolist(userprof: UserProfile)
+    {
+        val l=listofProfiles
+        l.add(userprof)
+        listofProfiles=l
         notifyDataSetChanged()
     }
 

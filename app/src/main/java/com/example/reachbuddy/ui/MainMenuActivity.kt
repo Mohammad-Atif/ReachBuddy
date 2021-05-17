@@ -59,6 +59,10 @@ class MainMenuActivity : AppCompatActivity() {
             }
         })
 
+        binding.imgrequests.setOnClickListener {
+            startActivity(Intent(this,FriendRequestActivity::class.java))
+        }
+
 
 
 

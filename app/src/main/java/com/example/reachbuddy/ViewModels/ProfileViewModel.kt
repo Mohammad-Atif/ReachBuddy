@@ -213,6 +213,30 @@ class ProfileViewModel : ViewModel(){
         }
     }
 
+    /*
+    Creating new method to update the recyclerviewlist with friend request list to show in friendrequestactivity
+     */
+
+    fun upadateForFriendsRecyclerView(profileadapter: ProfileRecyclerViewAdapter)
+    {
+        val task=dao.getProfileByName(getuserclasshere().user_name.toString())
+        task.addOnSuccessListener {
+            val userprof=it.documents.get(0).toObject<UserProfile>()
+            val listRequestUid= userprof?.FriendRequestList
+            if (listRequestUid != null) {
+                for(uid in listRequestUid) {
+                    val t=dao.getUserbyUid(uid)
+                    t.addOnSuccessListener {
+                        val prof=it.toObject<UserProfile>()
+                        profileadapter.addtolist(prof!!)
+
+                    }
+                }
+            }
+
+        }
+    }
+
     fun writeuserinfo(){
         val users=getuserclasshere()
 
@@ -304,6 +328,7 @@ class ProfileViewModel : ViewModel(){
             RequestsCount.postValue(requestslist?.size)
         }
     }
+
 
 
 

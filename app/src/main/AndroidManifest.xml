@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.AllProfilesActivity"></activity>
+        <activity android:name=".ui.FriendRequestActivity" />
+        <activity android:name=".ui.AllProfilesActivity" />
         <activity android:name=".ui.ProfileViewingActivity" />
         <activity android:name=".ui.Login_Activity">
             <intent-filter>
