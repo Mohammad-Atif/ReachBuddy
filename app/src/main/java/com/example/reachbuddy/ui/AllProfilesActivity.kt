@@ -41,7 +41,7 @@ class AllProfilesActivity : AppCompatActivity(),ProfileRecyclerViewAdapter.onCli
         }
     }
 
-    override fun Onclick(position: Int) {
+    override fun Onclick(position: Int,what:String) {
        // Toast.makeText(this,"Click Working", Toast.LENGTH_SHORT).show()
         val intent=Intent(this,ProfileViewingActivity::class.java)
         intent.putExtra(EXTRA_NAME,profileadapter.getprofileatpostion(position).UserName.toString())

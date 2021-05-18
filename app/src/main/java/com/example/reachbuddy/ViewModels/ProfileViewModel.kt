@@ -9,6 +9,8 @@ import com.example.reachbuddy.Daos.FirebaseDao
 import com.example.reachbuddy.Daos.ProfileDao
 import com.example.reachbuddy.Models.UserProfile
 import com.example.reachbuddy.Models.Users
+import com.example.reachbuddy.utils.Constants.Companion.ACCEPT_STRING
+import com.example.reachbuddy.utils.Constants.Companion.DECLINE_STRING
 import com.example.reachbuddy.utils.Constants.Companion.DEFAULT_BIO
 import com.example.reachbuddy.utils.Constants.Companion.IS_FREIND_REQ_SENT
 import com.example.reachbuddy.utils.Constants.Companion.IS_FRIEND
@@ -327,6 +329,45 @@ class ProfileViewModel : ViewModel(){
             val requestslist= userprof?.FriendRequestList
             RequestsCount.postValue(requestslist?.size)
         }
+    }
+
+    /*
+    Funtion to accept or decline the friendRequest
+     */
+
+    fun manageReqeust(perform:String, profileadapter:ProfileRecyclerViewAdapter,position:Int)
+    {
+        val userpiclink=profileadapter.getprofileatpostion(position).UserProfilePicLink.toString()
+        val uidtask=dao.getuid(userpiclink)
+        uidtask.addOnSuccessListener {
+            val user=it.documents.get(0).toObject<Users>()
+            val requestUid= user?.user_uid.toString()
+            val task=dao.getUserbyUid(getuserclasshere().user_uid.toString())
+
+            task.addOnSuccessListener {
+                val currentProfile=it.toObject<UserProfile>()
+                val currentFriends= currentProfile?.FriendsList
+                val currentRequests= currentProfile?.FriendRequestList
+                if(perform== ACCEPT_STRING)
+                {
+                    currentFriends?.add(requestUid)
+                    currentRequests?.remove(requestUid)
+                }
+                else if(perform== DECLINE_STRING)
+                {
+                    currentRequests?.remove(requestUid)
+                }
+                writeuserprofile(
+                    currentProfile?.UserName.toString(),
+                    currentProfile?.UserProfilePicLink.toString(), currentProfile?.UserBio.toString(),
+                    currentProfile?.LikesCount.toString(),
+                    currentProfile?.LikedBy, currentFriends!!, currentRequests!!
+                )
+                profileadapter.deleteatpos(position)
+
+            }
+        }
+
     }
 
 

@@ -12,6 +12,9 @@ import com.bumptech.glide.Glide
 import com.example.reachbuddy.Models.UserProfile
 import com.example.reachbuddy.R
 import com.example.reachbuddy.utils.Constants
+import com.example.reachbuddy.utils.Constants.Companion.ACCEPT_STRING
+import com.example.reachbuddy.utils.Constants.Companion.DECLINE_STRING
+import com.example.reachbuddy.utils.Constants.Companion.FOR_ALLPROFILE_STRING
 import com.example.reachbuddy.utils.Constants.Companion.FOR_PROFILE_VIEWING
 import com.example.reachbuddy.utils.Constants.Companion.FOR_REQUESTS_VIEWING
 import java.lang.IllegalArgumentException
@@ -55,23 +58,31 @@ class ProfileRecyclerViewAdapter(val listener: onClicklistener,val forwhich: Int
     Creating this viewholder to hold the views for showing the friend request list
      */
 
-    inner class FriendViewHolder(view: View):RecyclerView.ViewHolder(view),View.OnClickListener
+    inner class FriendViewHolder(view: View):RecyclerView.ViewHolder(view)
     {
         val userprofilepic : ImageView =view.findViewById(R.id.UserProfilePicImg)
         val userprofilename:TextView=view.findViewById(R.id.UserDisplayNameTxt)
         val userAcceptRequestImg : ImageView = view.findViewById(R.id.CheckImg)
         val userCancelRequestImg : ImageView = view.findViewById(R.id.CancelImg)
 
-        init {
-            view.setOnClickListener(this)
-        }
-
-        override fun onClick(p0: View?) {
-            val p = adapterPosition
-            if (p != RecyclerView.NO_POSITION) {
-                listener.Onclick(p)
-            }
-        }
+//        init {
+//            view.setOnClickListener(this)
+//        }
+//
+//        //updating the onclick to handle click on seperate items
+//        override fun onClick(p0: View?) {
+//            val p = adapterPosition
+//
+//            if (p != RecyclerView.NO_POSITION) {
+//                when(p0)
+//                {
+//                    userAcceptRequestImg->listener.Onclick(p, ACCEPT_STRING)
+//                    userCancelRequestImg->listener.Onclick(p, DECLINE_STRING)
+//                    else->listener.Onclick(p)
+//                }
+//            }
+//
+//        }
     }
 
     //this fucntion is to update the list when new pofile are added or profiles are deleted
@@ -89,6 +100,12 @@ class ProfileRecyclerViewAdapter(val listener: onClicklistener,val forwhich: Int
         val l=listofProfiles
         l.add(userprof)
         listofProfiles=l
+        notifyDataSetChanged()
+    }
+
+    fun deleteatpos(position: Int)
+    {
+        listofProfiles.removeAt(position)
         notifyDataSetChanged()
     }
 
@@ -142,14 +159,21 @@ class ProfileRecyclerViewAdapter(val listener: onClicklistener,val forwhich: Int
                 holder.userprofilename.text=listofProfiles.get(position).UserName
                 Glide.with(holder.itemView).load(listofProfiles.get(position).UserProfilePicLink).circleCrop()
                     .into(holder.userprofilepic)
+                holder.userAcceptRequestImg.setOnClickListener {
+                    listener.Onclick(position, ACCEPT_STRING)
+                }
+                holder.userCancelRequestImg.setOnClickListener {
+                    listener.Onclick(position, DECLINE_STRING)
+                }
             }
         }
 
     }
 
     interface onClicklistener{
-        fun Onclick(position: Int)
+        fun Onclick(position: Int,what: String=FOR_ALLPROFILE_STRING)
     }
+
 
     /*
     This funtion will tell  the Viewtype in the OncreateView funtion

@@ -41,10 +41,8 @@ class FriendRequestActivity : AppCompatActivity(),ProfileRecyclerViewAdapter.onC
         }
     }
 
-    override fun Onclick(position: Int) {
-        Toast.makeText(this,"Click Working", Toast.LENGTH_SHORT).show()
-
-
+    override fun Onclick(position: Int,what:String) {
+        viewModel.manageReqeust(what,profileadapter,position)
 
     }
 }

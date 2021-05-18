@@ -14,5 +14,8 @@ class Constants {
         const val IS_FRIEND="is friend"
         const val FOR_PROFILE_VIEWING=1
         const val FOR_REQUESTS_VIEWING=2
+        const val FOR_ALLPROFILE_STRING="default for profileViewing"
+            const val ACCEPT_STRING="Accept"
+            const val DECLINE_STRING="Decline"
     }
 }
