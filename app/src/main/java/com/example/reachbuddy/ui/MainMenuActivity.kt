@@ -63,7 +63,9 @@ class MainMenuActivity : AppCompatActivity() {
             startActivity(Intent(this,FriendRequestActivity::class.java))
         }
 
-
+        binding.btnChatRoom.setOnClickListener {
+            startActivity(Intent(this,PrivateChatActivity::class.java))
+        }
 
 
     }

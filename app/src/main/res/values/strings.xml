@@ -20,4 +20,7 @@
     <string name="make_buddy_string">MAKE BUDDY</string>
     <string name="for_canceling_request">For Canceling Request</string>
     <string name="for_accept_ing_request">For Accept ing Request</string>
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
