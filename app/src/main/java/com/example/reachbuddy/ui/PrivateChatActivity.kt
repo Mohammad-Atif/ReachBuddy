@@ -23,7 +23,6 @@ class PrivateChatActivity : AppCompatActivity() {
         val friendslistfragment=FriendsListFragment()
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentholder,friendslistfragment)
-            addToBackStack(null)
             commit()
         }
 

@@ -37,7 +37,7 @@ class FriendsListFragment : Fragment(),ProfileRecyclerViewAdapter.onClicklistene
         super.onViewCreated(view, savedInstanceState)
         viewModel=(activity as PrivateChatActivity).viewModel
         initrecyclerview()
-        viewModel.updaterecyclerviewlist(profileadapter)
+        viewModel.upadateForFriendsListRecyclerView(profileadapter)
 
 
     }

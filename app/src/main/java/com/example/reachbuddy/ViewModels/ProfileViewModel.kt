@@ -239,6 +239,31 @@ class ProfileViewModel : ViewModel(){
         }
     }
 
+    /*
+    Creating new method to update the recyclerviewlist with friends list to show in friendlist Fragment
+     */
+
+    fun upadateForFriendsListRecyclerView(profileadapter: ProfileRecyclerViewAdapter)
+    {
+        val task=dao.getProfileByName(getuserclasshere().user_name.toString())
+        task.addOnSuccessListener {
+            val userprof=it.documents.get(0).toObject<UserProfile>()
+            val listRequestUid= userprof?.FriendsList
+            if (listRequestUid != null) {
+                for(uid in listRequestUid) {
+                    val t=dao.getUserbyUid(uid)
+                    t.addOnSuccessListener {
+                        val prof=it.toObject<UserProfile>()
+                        profileadapter.addtolist(prof!!)
+
+                    }
+                }
+            }
+
+        }
+    }
+
+
     fun writeuserinfo(){
         val users=getuserclasshere()
 
