@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: SocialViewModel
     private lateinit var binding: ActivityMainBinding      //binding object used for viewBinding
+
     lateinit var  messageadapter:MessageRecyclerViewAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

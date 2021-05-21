@@ -313,6 +313,24 @@ class ProfileViewModel : ViewModel(){
              {
                  currentfriends?.remove(getuserclasshere().user_uid.toString())
 
+                 val getminetask=dao.getUserbyUid(getuserclasshere().user_uid.toString())
+                 getminetask.addOnSuccessListener {profil->
+                     val mineprofile=profil.toObject<UserProfile>()
+                     val minefriends=mineprofile?.FriendsList
+                     val getuid=dao.getuid(userprof?.UserProfilePicLink.toString())
+                     getuid.addOnSuccessListener {doc->
+                         val user=doc.documents.get(0).toObject<Users>()
+                         val requestUid= user?.user_uid.toString()
+                         minefriends?.remove(requestUid)
+                         writeuserprofile(
+                             mineprofile?.UserName.toString(),
+                             mineprofile?.UserProfilePicLink.toString(), mineprofile?.UserBio.toString(),
+                             mineprofile?.LikesCount.toString(),
+                             mineprofile?.LikedBy, minefriends!!, mineprofile?.FriendRequestList
+                         )
+                     }
+                 }
+
                  f[IS_FRIEND] = false
                  f[IS_FREIND_REQ_SENT] = false
 
@@ -358,6 +376,8 @@ class ProfileViewModel : ViewModel(){
 
     /*
     Funtion to accept or decline the friendRequest
+    21.5.21  this function is currently wrong because it is not updating the database of both the users
+    Now changing it to update the database of both users
      */
 
     fun manageReqeust(perform:String, profileadapter:ProfileRecyclerViewAdapter,position:Int)
@@ -368,26 +388,41 @@ class ProfileViewModel : ViewModel(){
             val user=it.documents.get(0).toObject<Users>()
             val requestUid= user?.user_uid.toString()
             val task=dao.getUserbyUid(getuserclasshere().user_uid.toString())
-
             task.addOnSuccessListener {
                 val currentProfile=it.toObject<UserProfile>()
                 val currentFriends= currentProfile?.FriendsList
                 val currentRequests= currentProfile?.FriendRequestList
-                if(perform== ACCEPT_STRING)
-                {
-                    currentFriends?.add(requestUid)
-                    currentRequests?.remove(requestUid)
+                val othertask=dao.getUserbyUid(requestUid)
+                othertask.addOnSuccessListener {
+                    val secondprofile=it.toObject<UserProfile>()
+                    val secondFriends=secondprofile?.FriendsList
+                    val secondRequests=secondprofile?.FriendRequestList
+                    if(perform== ACCEPT_STRING)
+                    {
+                        currentFriends?.add(requestUid)
+                        secondFriends?.add(getuserclasshere().user_uid.toString())
+                        currentRequests?.remove(requestUid)
+                        secondRequests?.remove(getuserclasshere().user_uid.toString())
+                    }
+                    else if(perform== DECLINE_STRING)
+                    {
+                        currentRequests?.remove(requestUid)
+                    }
+                    writeuserprofile(
+                        currentProfile?.UserName.toString(),
+                        currentProfile?.UserProfilePicLink.toString(), currentProfile?.UserBio.toString(),
+                        currentProfile?.LikesCount.toString(),
+                        currentProfile?.LikedBy, currentFriends!!, currentRequests!!
+                    )
+                    writeuserprofile(
+                        secondprofile?.UserName.toString(),
+                        secondprofile?.UserProfilePicLink.toString(), secondprofile?.UserBio.toString(),
+                        secondprofile?.LikesCount.toString(),
+                        secondprofile?.LikedBy, secondFriends!!, secondRequests!!
+                    )
+
                 }
-                else if(perform== DECLINE_STRING)
-                {
-                    currentRequests?.remove(requestUid)
-                }
-                writeuserprofile(
-                    currentProfile?.UserName.toString(),
-                    currentProfile?.UserProfilePicLink.toString(), currentProfile?.UserBio.toString(),
-                    currentProfile?.LikesCount.toString(),
-                    currentProfile?.LikedBy, currentFriends!!, currentRequests!!
-                )
+
                 profileadapter.deleteatpos(position)
 
             }

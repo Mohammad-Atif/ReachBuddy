@@ -72,6 +72,14 @@ class FirebaseDao {
             return messages
         }
 
+        /*
+        20.5.21
+        Now creating new getusermsg function which will return task and then we in the viewmodel
+        apply onsucceslitner and perform our motive
+         */
+
+
+
         suspend fun GetInstantMsg():MutableList<UserMessage>
         {
             val messages: MutableList<UserMessage> = mutableListOf()
