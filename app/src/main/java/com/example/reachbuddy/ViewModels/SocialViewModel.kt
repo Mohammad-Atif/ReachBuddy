@@ -85,7 +85,7 @@ class SocialViewModel(
     Funtion to handle send button click event on fragment private chat
      */
 
-    fun writeChatmessage(msg: String,userpiclink:String){
+    fun writeChatmessage(msg: String){
 
         val c = Calendar.getInstance()
         val hour = c.get(Calendar.HOUR_OF_DAY).toString()
@@ -101,7 +101,7 @@ class SocialViewModel(
         l?.add(userMessage)
         chats.postValue(l)
         val uid1=getuserclass().user_uid.toString()
-        val task=repository.getuid(userpiclink)
+        val task=repository.getuid(piclink)
         task.addOnSuccessListener {
             val user=it.documents.get(0).toObject<Users>()
             val uid2= user?.user_uid.toString()
@@ -112,9 +112,9 @@ class SocialViewModel(
 
     }
 
-    fun getInitalPrivateMsg(userpiclink: String){
+    fun getInitalPrivateMsg(){
         val uid1=getuserclass().user_uid.toString()
-        val taskforuid=repository.getuid(userpiclink)
+        val taskforuid=repository.getuid(piclink)
         taskforuid.addOnSuccessListener {
             val user=it.documents.get(0).toObject<Users>()
             val uid2= user?.user_uid.toString()

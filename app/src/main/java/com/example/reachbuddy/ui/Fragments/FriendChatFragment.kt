@@ -38,7 +38,7 @@ class FriendChatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         socialViewModel=(activity as PrivateChatActivity).socialViewModel
-        socialViewModel.getInitalPrivateMsg(socialViewModel.piclink)
+        socialViewModel.getInitalPrivateMsg()
 
         socialViewModel.chats.observe(viewLifecycleOwner, Observer {
            if(it!=null)
@@ -47,7 +47,7 @@ class FriendChatFragment : Fragment() {
 
         initrecyclerview()
         binding.friendBtnSend.setOnClickListener {
-            socialViewModel.writeChatmessage(binding.friendTxtMessage.text.toString(),socialViewModel.piclink)
+            socialViewModel.writeChatmessage(binding.friendTxtMessage.text.toString())
         }
 
     }
