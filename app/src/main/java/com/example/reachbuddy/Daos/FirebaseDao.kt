@@ -6,6 +6,7 @@ import com.example.reachbuddy.Models.UserMessage
 import com.example.reachbuddy.Models.Users
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -82,6 +83,15 @@ class FirebaseDao {
 
             val t= chatref.document(docname).get()
             return t
+        }
+
+        fun getreference(user1uid: String,user2uid: String): DocumentReference {
+            val docname = if(user1uid<user2uid)
+                "${user1uid}_${user2uid}"
+            else
+                "${user2uid}_${user1uid}"
+
+            return chatref.document(docname)
         }
 
         /*

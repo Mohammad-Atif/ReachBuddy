@@ -39,6 +39,7 @@ class FriendChatFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         socialViewModel=(activity as PrivateChatActivity).socialViewModel
         socialViewModel.getInitalPrivateMsg()
+        socialViewModel.realTimeMsg()
 
         socialViewModel.chats.observe(viewLifecycleOwner, Observer {
            if(it!=null)

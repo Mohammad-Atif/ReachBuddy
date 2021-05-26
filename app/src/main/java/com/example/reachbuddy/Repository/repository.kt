@@ -24,5 +24,6 @@ class repository(
 
     fun getuid(username:String)=profiledao.getuid(username)
 
+    fun getdocref(user1uid:String,user2uid:String) = FirebaseDao.getreference(user1uid,user2uid)
 
 }

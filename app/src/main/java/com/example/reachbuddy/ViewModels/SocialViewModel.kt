@@ -1,5 +1,6 @@
 package com.example.reachbuddy.ViewModels
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,7 +13,10 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 class SocialViewModel(
@@ -126,6 +130,31 @@ class SocialViewModel(
                     chats.postValue(messeges)
 
 
+                }
+            }
+        }
+    }
+
+    fun realTimeMsg()
+    {
+        val uid1=getuserclass().user_uid.toString()
+        val taskforuid=repository.getuid(piclink)
+        taskforuid.addOnSuccessListener {
+            val user=it.documents.get(0).toObject<Users>()
+            val uid2= user?.user_uid.toString()
+            val docref=repository.getdocref(uid1,uid2)
+            docref.addSnapshotListener { value, error ->
+                if (error != null) {
+                    Log.w("failed", "Listen failed.", error)
+                    return@addSnapshotListener
+                }
+
+                if(value!=null)
+                {
+                    val userchat=value.toObject<UserChat>()
+                    if (userchat != null) {
+                        chats.postValue(userchat.messeges)
+                    }
                 }
             }
         }
