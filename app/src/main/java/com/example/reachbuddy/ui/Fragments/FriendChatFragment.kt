@@ -44,11 +44,13 @@ class FriendChatFragment : Fragment() {
         socialViewModel.chats.observe(viewLifecycleOwner, Observer {
            if(it!=null)
             messageadapter.updatelist(it)
+            binding.friendMsgRecyclerView.scrollToPosition(messageadapter.itemCount-1)
         })
 
         initrecyclerview()
         binding.friendBtnSend.setOnClickListener {
             socialViewModel.writeChatmessage(binding.friendTxtMessage.text.toString())
+            binding.friendTxtMessage.text.clear()
         }
 
     }

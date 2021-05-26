@@ -61,7 +61,7 @@ class FriendsListFragment : Fragment(),ProfileRecyclerViewAdapter.onClicklistene
     }
 
     override fun Onclick(position: Int, what: String) {
-        Toast.makeText(activity,"Click Working", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(activity,"Click Working", Toast.LENGTH_SHORT).show()
         socialViewModel.piclink=profileadapter.getprofileatpostion(position).UserProfilePicLink.toString()
         (activity as PrivateChatActivity).supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentholder,chatFragment)
