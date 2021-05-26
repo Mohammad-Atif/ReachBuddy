@@ -1,9 +1,12 @@
 package com.example.reachbuddy.Daos
 
 import android.util.Log
+import com.example.reachbuddy.Models.UserChat
 import com.example.reachbuddy.Models.UserMessage
 import com.example.reachbuddy.Models.Users
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -18,6 +21,7 @@ class FirebaseDao {
 
     companion object{
         val db=Firebase.firestore
+        private val chatref=db.collection("CHATS")
         suspend fun writeuser(users: Users)
         {
             val ref=db.collection("USER")
@@ -46,6 +50,38 @@ class FirebaseDao {
             val sec = c.get(Calendar.SECOND).toString()
             val msgref=db.collection("MESSAGES")
             msgref.document("$month:$day:$hour:$minute:$sec").set(userMessage)
+        }
+
+        /*
+        Creating new method to write the message for private chat fragment
+        Rules -   the collection used is CHAT collection
+        Inside it we create the document which contains the chat of each two indidual user
+        Name of the document? - it will be named as both the useruid with the-
+        rules for which uid came first
+        ex- user1uid,user2uid
+        if  user1uid<user2uid - docname="user1uid_user2uid"
+        else                  -docname="user2uid_user1uid"
+         */
+
+        suspend fun writeInPrivateChat(userMessages: MutableList<UserMessage>,user1uid:String,user2uid:String)
+        {
+            lateinit var docname:String
+            docname = if(user1uid<user2uid)
+                "${user1uid}_${user2uid}"
+            else
+                "${user2uid}_${user1uid}"
+
+            chatref.document(docname).set(UserChat(userMessages))
+        }
+
+        suspend fun getPrivatemsg(user1uid: String,user2uid: String): Task<DocumentSnapshot> {
+            val docname = if(user1uid<user2uid)
+                "${user1uid}_${user2uid}"
+            else
+                "${user2uid}_${user1uid}"
+
+            val t= chatref.document(docname).get()
+            return t
         }
 
         /*
@@ -102,6 +138,8 @@ class FirebaseDao {
                 }
             return messages
         }
+
+
 
     }
 

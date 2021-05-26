@@ -11,6 +11,7 @@ import com.example.reachbuddy.Adapters.ProfileRecyclerViewAdapter
 
 import com.example.reachbuddy.R
 import com.example.reachbuddy.ViewModels.ProfileViewModel
+import com.example.reachbuddy.ViewModels.SocialViewModel
 import com.example.reachbuddy.databinding.FragmentFriendsListBinding
 import com.example.reachbuddy.ui.PrivateChatActivity
 import com.example.reachbuddy.utils.Constants
@@ -24,6 +25,8 @@ class FriendsListFragment : Fragment(),ProfileRecyclerViewAdapter.onClicklistene
     lateinit var binding: FragmentFriendsListBinding
     lateinit var profileadapter:ProfileRecyclerViewAdapter
     lateinit var viewModel: ProfileViewModel
+    lateinit var socialViewModel: SocialViewModel
+    lateinit var chatFragment: FriendChatFragment
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,9 +39,10 @@ class FriendsListFragment : Fragment(),ProfileRecyclerViewAdapter.onClicklistene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel=(activity as PrivateChatActivity).viewModel
+        socialViewModel=(activity as PrivateChatActivity).socialViewModel
         initrecyclerview()
         viewModel.upadateForFriendsListRecyclerView(profileadapter)
-
+        chatFragment= FriendChatFragment()
 
     }
 
@@ -58,6 +62,13 @@ class FriendsListFragment : Fragment(),ProfileRecyclerViewAdapter.onClicklistene
 
     override fun Onclick(position: Int, what: String) {
         Toast.makeText(activity,"Click Working", Toast.LENGTH_SHORT).show()
+        socialViewModel.piclink=profileadapter.getprofileatpostion(position).UserProfilePicLink.toString()
+        (activity as PrivateChatActivity).supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragmentholder,chatFragment)
+            addToBackStack(null)
+            commit()
+
+        }
     }
 
 }
