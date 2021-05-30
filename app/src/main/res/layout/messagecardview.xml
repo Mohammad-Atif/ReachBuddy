@@ -6,48 +6,51 @@
     app:cardElevation="10dp"
     app:cardCornerRadius="2dp"
     app:cardPreventCornerOverlap="false">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background=" #204675 "
         android:orientation="vertical">
 
 
         <TextView
+            android:id="@+id/messagetxtview"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:id="@+id/messagetxtview"
-            android:textColor="#000000"
             android:inputType="textMultiLine"
-            android:paddingTop="10dp"
             android:paddingLeft="2dp"
+            android:paddingTop="10dp"
             android:paddingRight="2dp"
-            android:textSize="18sp"
             android:text="@string/message_view"
-            />
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="5dp"
                 android:layout_weight="1"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingTop="5dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
                     android:id="@+id/sender_name_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/sender_name"
-                    android:layout_height="wrap_content"/>
-
+                    android:textColor="#FFFFFF" />
 
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -55,13 +58,13 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
                     android:id="@+id/date_sended_view"
-                    android:text="@string/date_sended"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_height="wrap_content"/>
+                    android:text="@string/date_sended"
+                    android:textColor="#FFFFFF" />
             </LinearLayout>
-
 
 
         </LinearLayout>

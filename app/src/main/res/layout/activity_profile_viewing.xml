@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#02172E"
     tools:context=".ui.ProfileViewingActivity">
 
     <ImageView
@@ -25,7 +26,7 @@
         android:layout_marginTop="32dp"
         android:fontFamily="@font/poppins_medium"
         android:text="@string/display_name_string"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/ImgProfilePic"
         app:layout_constraintStart_toStartOf="@+id/ImgProfilePic"
@@ -49,6 +50,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
         android:text="@string/count_string"
+        android:textColor="#FFFFFF"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/ImgLike"
         app:layout_constraintEnd_toEndOf="@+id/TxtProfileName"
@@ -69,7 +71,7 @@
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
         android:text="@string/your_bio_here_string"
-        android:textColor="#E3000000"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

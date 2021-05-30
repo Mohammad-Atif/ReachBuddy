@@ -20,7 +20,8 @@
             android:id="@+id/msg_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/messagecardview"/>
+            android:background="#02172E"
+            tools:listitem="@layout/messagecardview" />
     </LinearLayout>
 
     <LinearLayout
@@ -30,6 +31,7 @@
         android:layout_marginEnd="1dp"
         android:layout_marginRight="1dp"
         android:layout_marginBottom="2dp"
+        android:background="#02172E"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,14 +45,20 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="@string/type_your_message"
+            android:textColorHint="#f5f0f0"
+            android:importantForAutofill="no"
             android:inputType="textPersonName"
-            android:importantForAutofill="no" />
+            android:textColor="#FFFFFF" />
 
         <Button
             android:id="@+id/btn_send"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/send_str" />
+            android:background="@drawable/rounded_corner"
+            android:text="@string/send_str"
+            android:textAllCaps="true"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
