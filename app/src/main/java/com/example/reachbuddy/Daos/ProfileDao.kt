@@ -1,5 +1,6 @@
 package com.example.reachbuddy.Daos
 
+import android.net.Uri
 import android.util.Log
 import com.example.reachbuddy.Models.UserProfile
 import com.example.reachbuddy.Models.Users
@@ -12,6 +13,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.UploadTask
+import com.google.firebase.storage.ktx.storage
 import kotlin.math.log
 
 /*
@@ -23,7 +26,7 @@ class ProfileDao {
     val db=Firebase.firestore
     val Usersref=db.collection("USER")
     val userProfileref=db.collection("PROFILES")
-
+    private val storageref=Firebase.storage.reference
 
     suspend fun addUserProfile(userProfile: UserProfile, User_uid:String=getuserclass().user_uid.toString()){
 
@@ -84,6 +87,14 @@ class ProfileDao {
         return Usersref.whereEqualTo("user_image_url",piclink).get()
     }
 
+    //funtion to add the image in the firebase storage and it will be a suspend funtion to do
+    //this task in the background
+
+    suspend fun uploadImage(userUid:String,imageUri: Uri): UploadTask {
+        val task= storageref.child("images/$userUid").putFile(imageUri)
+        return task
+
+    }
 
 
     private fun getuserclass(): Users

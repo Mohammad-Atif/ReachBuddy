@@ -28,8 +28,11 @@ class MainMenuActivity : AppCompatActivity() {
         binding.imgrequests.visibility=View.INVISIBLE
         binding.requestcount.visibility=View.INVISIBLE
         viewModel.getRequestsCount()
+        viewModel.updatepicTemporary()
+        viewModel.imagelink.observe(this, Observer {
+            Glide.with(this).load(it).circleCrop().into(binding.UserProfileIcon)
+        })
 
-        Glide.with(this).load(viewModel.imageurl).circleCrop().into(binding.UserProfileIcon)
 
         binding.btnPublicChat.setOnClickListener {
             startActivity(Intent(this,MainActivity::class.java))

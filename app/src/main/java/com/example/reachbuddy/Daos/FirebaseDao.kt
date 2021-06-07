@@ -1,5 +1,6 @@
 package com.example.reachbuddy.Daos
 
+import android.net.Uri
 import android.util.Log
 import com.example.reachbuddy.Models.UserChat
 import com.example.reachbuddy.Models.UserMessage
@@ -11,6 +12,8 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.UploadTask
+import com.google.firebase.storage.ktx.storage
 import java.util.*
 
 /*
@@ -20,17 +23,17 @@ It provides all the methods only and it is used inside repository
 
 class FirebaseDao {
 
-    companion object{
-        val db=Firebase.firestore
-        private val chatref=db.collection("CHATS")
-        suspend fun writeuser(users: Users)
-        {
-            val ref=db.collection("USER")
+    companion object {
+        val db = Firebase.firestore
+        private val chatref = db.collection("CHATS")
+
+        suspend fun writeuser(users: Users) {
+            val ref = db.collection("USER")
             ref.document(users.user_uid.toString()).set(users).addOnSuccessListener {
-                Log.e("write_log","Succesfulll")
+                Log.e("write_log", "Succesfulll")
             }
                 .addOnFailureListener {
-                    Log.e("write_log",it.toString())
+                    Log.e("write_log", it.toString())
                 }
         }
 
@@ -38,8 +41,7 @@ class FirebaseDao {
         This method is for when the user types message and press send button
         it will add the data in  the firestore database
          */
-        suspend fun WriteMsgtoDB(userMessage: UserMessage)
-        {
+        suspend fun WriteMsgtoDB(userMessage: UserMessage) {
             val c = Calendar.getInstance()
 
             val year = c.get(Calendar.YEAR)
@@ -49,7 +51,7 @@ class FirebaseDao {
             val hour = c.get(Calendar.HOUR_OF_DAY).toString()
             val minute = c.get(Calendar.MINUTE).toString()
             val sec = c.get(Calendar.SECOND).toString()
-            val msgref=db.collection("MESSAGES")
+            val msgref = db.collection("MESSAGES")
             msgref.document("$month:$day:$hour:$minute:$sec").set(userMessage)
         }
 
@@ -64,10 +66,13 @@ class FirebaseDao {
         else                  -docname="user2uid_user1uid"
          */
 
-        suspend fun writeInPrivateChat(userMessages: MutableList<UserMessage>,user1uid:String,user2uid:String)
-        {
-            lateinit var docname:String
-            docname = if(user1uid<user2uid)
+        suspend fun writeInPrivateChat(
+            userMessages: MutableList<UserMessage>,
+            user1uid: String,
+            user2uid: String
+        ) {
+            lateinit var docname: String
+            docname = if (user1uid < user2uid)
                 "${user1uid}_${user2uid}"
             else
                 "${user2uid}_${user1uid}"
@@ -75,18 +80,18 @@ class FirebaseDao {
             chatref.document(docname).set(UserChat(userMessages))
         }
 
-        suspend fun getPrivatemsg(user1uid: String,user2uid: String): Task<DocumentSnapshot> {
-            val docname = if(user1uid<user2uid)
+        suspend fun getPrivatemsg(user1uid: String, user2uid: String): Task<DocumentSnapshot> {
+            val docname = if (user1uid < user2uid)
                 "${user1uid}_${user2uid}"
             else
                 "${user2uid}_${user1uid}"
 
-            val t= chatref.document(docname).get()
+            val t = chatref.document(docname).get()
             return t
         }
 
-        fun getreference(user1uid: String,user2uid: String): DocumentReference {
-            val docname = if(user1uid<user2uid)
+        fun getreference(user1uid: String, user2uid: String): DocumentReference {
+            val docname = if (user1uid < user2uid)
                 "${user1uid}_${user2uid}"
             else
                 "${user2uid}_${user1uid}"
@@ -103,18 +108,17 @@ class FirebaseDao {
         is used to be here- mutablelistof()..... means empty
 
          */
-        suspend fun getusersmesseges():MutableList<UserMessage>{
+        suspend fun getusersmesseges(): MutableList<UserMessage> {
             val messages: MutableList<UserMessage> = mutableListOf()
-            val msgref=db.collection("MESSAGES")
-            msgref.get().addOnSuccessListener { 
+            val msgref = db.collection("MESSAGES")
+            msgref.get().addOnSuccessListener {
                 lateinit var userMessage: UserMessage
-                for(document in it)
-                {
-                    userMessage=document.toObject<UserMessage>()
+                for (document in it) {
+                    userMessage = document.toObject<UserMessage>()
                     messages.add(userMessage)
                 }
             }
-            Log.e("size","${messages.size}")
+            Log.e("size", "${messages.size}")
             return messages
         }
 
@@ -125,12 +129,10 @@ class FirebaseDao {
          */
 
 
-
-        suspend fun GetInstantMsg():MutableList<UserMessage>
-        {
+        suspend fun GetInstantMsg(): MutableList<UserMessage> {
             val messages: MutableList<UserMessage> = mutableListOf()
-            val msgref=db.collection("MESSAGES")
-            msgref.addSnapshotListener{snapshot,e->
+            val msgref = db.collection("MESSAGES")
+            msgref.addSnapshotListener { snapshot, e ->
                 if (e != null) {
                     Log.w("failed", "Listen failed.", e)
                     return@addSnapshotListener
@@ -138,20 +140,17 @@ class FirebaseDao {
 
                 if (snapshot != null) {
                     lateinit var userMessage: UserMessage
-                    for(document in snapshot)
-                    {
-                        userMessage=document.toObject<UserMessage>()
+                    for (document in snapshot) {
+                        userMessage = document.toObject<UserMessage>()
                         messages.add(userMessage)
                     }
                 }
 
-                }
+            }
             return messages
         }
 
 
-
     }
-
 
 }

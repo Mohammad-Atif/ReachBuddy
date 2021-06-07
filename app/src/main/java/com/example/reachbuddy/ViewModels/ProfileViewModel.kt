@@ -1,5 +1,6 @@
 package com.example.reachbuddy.ViewModels
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,6 +18,7 @@ import com.example.reachbuddy.utils.Constants.Companion.IS_FRIEND
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.launch
 
 
@@ -430,6 +432,58 @@ class ProfileViewModel : ViewModel(){
 
     }
 
+
+    //funtion to hadle the upload of the image in the storage and the change the userpiclink to
+    //newly uplaoded image
+
+    fun handlepicupload(imageUri: Uri)
+    {
+        val userUid=getuserclasshere().user_uid.toString()
+        viewModelScope.launch {
+            val uploadTask=dao.uploadImage(userUid,imageUri)
+            val ref=Firebase.storage.reference.child("images/$userUid")
+
+            val urlTask = uploadTask.continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
+                    }
+                }
+                ref.downloadUrl
+            }.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    //here is the download url
+                    val newPicUrl = task.result.toString()
+                    val taskprofile=dao.getUserbyUid(userUid)
+                    taskprofile.addOnSuccessListener {
+                        val currentProfile=it.toObject<UserProfile>()
+                        writeuserprofile(
+                            currentProfile?.UserName.toString(),
+                            newPicUrl, currentProfile?.UserBio.toString(),
+                            currentProfile?.LikesCount.toString(),
+                            currentProfile?.LikedBy, currentProfile!!.FriendsList, currentProfile!!.FriendRequestList
+                        )
+                        imagelink.postValue(newPicUrl)
+
+                    }
+                }
+            }
+
+        }
+    }
+
+
+    //temporary function to handle main nemu pic
+    //basically update userpic livedata and fetch from userProfile
+
+    fun updatepicTemporary()
+    {
+        val task=dao.getUserbyUid(getuserclasshere().user_uid.toString())
+        task.addOnSuccessListener {
+            val prof=it.toObject<UserProfile>()
+            imagelink.postValue(prof?.UserProfilePicLink.toString())
+        }
+    }
 
 
 

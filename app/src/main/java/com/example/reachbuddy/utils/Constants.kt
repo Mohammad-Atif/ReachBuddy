@@ -18,5 +18,6 @@ class Constants {
         const val EXTRA_PIC="pic link"
         const val ACCEPT_STRING="Accept"
         const val DECLINE_STRING="Decline"
+            const val REQUEST_CODE_IMAGE_PICK = 0
     }
 }
