@@ -19,7 +19,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 /*
@@ -465,10 +467,23 @@ class ProfileViewModel : ViewModel(){
                         )
                         imagelink.postValue(newPicUrl)
 
+                        //also updating the userclass piclink because it is used in getting messeges
+                        updateUserClass(newPicUrl)
+
+
                     }
                 }
             }
 
+        }
+    }
+
+    fun updateUserClass(newpic:String)
+    {
+        viewModelScope.launch {
+            FirebaseDao.writeuser(Users(getuserclasshere().user_name.toString(),
+            getuserclasshere().user_uid.toString(),
+            newpic))
         }
     }
 
